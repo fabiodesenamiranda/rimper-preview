@@ -1,0 +1,330 @@
+---
+import source from '../../Home RI Impermeabilizacao.dc.html?raw';
+import Seo from '../components/Seo.astro';
+import { site } from '../config/site';
+
+const helmet = source.match(/<helmet>([\s\S]*?)<\/helmet>/)?.[1] ?? '';
+let page = source.match(/<x-dc>([\s\S]*?)<\/x-dc>/)?.[1] ?? '';
+
+page = page
+  .replace(/<helmet>[\s\S]*?<\/helmet>/, '')
+  .replace(/<sc-if[^>]*>/g, '')
+  .replace(/<\/sc-if>/g, '')
+  .replaceAll('href="/sitemap.xml"', 'href="/sitemap-index.xml"')
+  .replace(
+    '<nav style=',
+    '<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="main-nav" style=',
+  )
+  .replace('button type="button"', 'button class="form-submit" type="submit"');
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${site.url}/#business`,
+  name: site.name,
+  legalName: site.legalName,
+  url: site.url,
+  logo: `${site.url}/images/logonovo.png`,
+  image: `${site.url}${site.defaultImage}`,
+  description: site.description,
+  telephone: site.phone,
+  address: {
+    '@type': 'PostalAddress',
+    ...site.address,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Itu' },
+    { '@type': 'AdministrativeArea', name: 'Região de Sorocaba' },
+    { '@type': 'State', name: 'São Paulo' },
+  ],
+  sameAs: site.social,
+};
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <Seo
+      title="RI Impermeabilização | Proteção para sua obra"
+      description={site.description}
+      imageAlt="Serviços profissionais de impermeabilização da RI Impermeabilização"
+      titleTemplate={false}
+      schema={localBusinessSchema}
+    />
+    <Fragment set:html={helmet} />
+  </head>
+  <body>
+    <Fragment set:html={page} />
+
+    <script>
+      const menuButton = document.querySelector('.menu-toggle');
+      const menu = document.querySelector('.main-nav');
+
+      menuButton?.addEventListener('click', () => {
+        const isOpen = menu?.classList.toggle('is-open') ?? false;
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+        menuButton.textContent = isOpen ? '×' : '☰';
+      });
+
+      menu?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('is-open');
+          menuButton?.setAttribute('aria-expanded', 'false');
+          if (menuButton) menuButton.textContent = '☰';
+        });
+      });
+
+      const form = document.querySelector('#contato form');
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const button = form.querySelector('.form-submit');
+        if (button instanceof HTMLButtonElement) {
+          button.textContent = 'Solicitação recebida!';
+          button.disabled = true;
+        }
+      });
+
+      const blogCarousel = document.querySelector('[data-blog-carousel]');
+      const blogButtons = document.querySelectorAll('[data-blog-direction]');
+
+      blogButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!(blogCarousel instanceof HTMLElement)) return;
+          const firstCard = blogCarousel.querySelector('.blog-card');
+          const cardWidth = firstCard instanceof HTMLElement ? firstCard.offsetWidth : blogCarousel.clientWidth;
+          const direction = button.getAttribute('data-blog-direction') === 'previous' ? -1 : 1;
+          blogCarousel.scrollBy({ left: direction * (cardWidth + 24), behavior: 'smooth' });
+        });
+      });
+
+      const reviewsCarousel = document.querySelector('[data-reviews-carousel]');
+      const reviewsButtons = document.querySelectorAll('[data-reviews-direction]');
+      let reviewsAutoplay: ReturnType<typeof setInterval> | undefined;
+
+      const stopReviewsAutoplay = () => {
+        if (reviewsAutoplay) clearInterval(reviewsAutoplay);
+        reviewsAutoplay = undefined;
+      };
+
+      const moveReviews = (direction: number) => {
+        if (!(reviewsCarousel instanceof HTMLElement)) return;
+        const firstReview = reviewsCarousel.querySelector('.review-card');
+        const reviewWidth = firstReview instanceof HTMLElement ? firstReview.offsetWidth : reviewsCarousel.clientWidth;
+        const reachedEnd = reviewsCarousel.scrollLeft + reviewsCarousel.clientWidth >= reviewsCarousel.scrollWidth - 4;
+        const reachedStart = reviewsCarousel.scrollLeft <= 4;
+        if (direction > 0 && reachedEnd) {
+          reviewsCarousel.scrollTo({ left: 0, behavior: 'smooth' });
+        } else if (direction < 0 && reachedStart) {
+          reviewsCarousel.scrollTo({ left: reviewsCarousel.scrollWidth, behavior: 'smooth' });
+        } else {
+          reviewsCarousel.scrollBy({ left: direction * (reviewWidth + 20), behavior: 'smooth' });
+        }
+      };
+
+      const startReviewsAutoplay = () => {
+        if (!(reviewsCarousel instanceof HTMLElement)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        stopReviewsAutoplay();
+        reviewsAutoplay = setInterval(() => moveReviews(1), 4500);
+      };
+
+      reviewsButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          moveReviews(button.getAttribute('data-reviews-direction') === 'previous' ? -1 : 1);
+          startReviewsAutoplay();
+        });
+      });
+
+      if (reviewsCarousel instanceof HTMLElement) {
+        reviewsCarousel.addEventListener('mouseenter', stopReviewsAutoplay);
+        reviewsCarousel.addEventListener('mouseleave', startReviewsAutoplay);
+        reviewsCarousel.addEventListener('focusin', stopReviewsAutoplay);
+        reviewsCarousel.addEventListener('focusout', startReviewsAutoplay);
+        reviewsCarousel.addEventListener('touchstart', stopReviewsAutoplay, { passive: true });
+        reviewsCarousel.addEventListener('touchend', startReviewsAutoplay, { passive: true });
+        startReviewsAutoplay();
+      }
+
+      const partnersCarousel = document.querySelector('[data-partners-carousel]');
+      const partnersButtons = document.querySelectorAll('[data-partners-direction]');
+
+      partnersButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!(partnersCarousel instanceof HTMLElement)) return;
+          const firstLogo = partnersCarousel.querySelector('.partner-logo');
+          const logoWidth = firstLogo instanceof HTMLElement ? firstLogo.offsetWidth : partnersCarousel.clientWidth;
+          const direction = button.getAttribute('data-partners-direction') === 'previous' ? -1 : 1;
+          partnersCarousel.scrollBy({ left: direction * (logoWidth + 16), behavior: 'smooth' });
+        });
+      });
+
+      let partnersAutoplay: ReturnType<typeof setInterval> | undefined;
+
+      const stopPartnersAutoplay = () => {
+        if (partnersAutoplay) clearInterval(partnersAutoplay);
+        partnersAutoplay = undefined;
+      };
+
+      const startPartnersAutoplay = () => {
+        if (!(partnersCarousel instanceof HTMLElement)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        stopPartnersAutoplay();
+        partnersAutoplay = setInterval(() => {
+          const firstLogo = partnersCarousel.querySelector('.partner-logo');
+          const logoWidth = firstLogo instanceof HTMLElement ? firstLogo.offsetWidth : partnersCarousel.clientWidth;
+          const reachedEnd = partnersCarousel.scrollLeft + partnersCarousel.clientWidth >= partnersCarousel.scrollWidth - 4;
+          partnersCarousel.scrollTo({
+            left: reachedEnd ? 0 : partnersCarousel.scrollLeft + logoWidth + 16,
+            behavior: 'smooth',
+          });
+        }, 2800);
+      };
+
+      if (partnersCarousel instanceof HTMLElement) {
+        partnersCarousel.addEventListener('mouseenter', stopPartnersAutoplay);
+        partnersCarousel.addEventListener('mouseleave', startPartnersAutoplay);
+        partnersCarousel.addEventListener('focusin', stopPartnersAutoplay);
+        partnersCarousel.addEventListener('focusout', startPartnersAutoplay);
+        partnersCarousel.addEventListener('touchstart', stopPartnersAutoplay, { passive: true });
+        partnersCarousel.addEventListener('touchend', startPartnersAutoplay, { passive: true });
+        startPartnersAutoplay();
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid oklch(0.88 0.01 250);
+    border-radius: 4px;
+    background: #fff;
+    color: oklch(0.35 0.08 250);
+    font: 600 25px/1 Archivo, sans-serif;
+    cursor: pointer;
+  }
+
+  [style-hover] {
+    transition: transform 180ms ease, border-color 180ms ease,
+      background-color 180ms ease, color 180ms ease;
+  }
+
+  article[style-hover]:hover {
+    transform: translateY(-3px);
+    border-color: oklch(0.7 0.06 250) !important;
+  }
+
+  a[style-hover]:hover,
+  button[style-hover]:hover {
+    filter: brightness(1.08);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid oklch(0.68 0.1 250 / 0.25);
+    border-color: oklch(0.5 0.11 250) !important;
+  }
+
+  button:disabled {
+    cursor: default !important;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 900px) {
+    body > div > div:first-child > div {
+      justify-content: center !important;
+      text-align: center;
+    }
+
+    body > div > div:first-child > div > div:first-child {
+      display: none !important;
+    }
+
+    body > div > header > div {
+      padding: 12px 20px !important;
+      flex-wrap: nowrap !important;
+    }
+
+    .menu-toggle {
+      display: block;
+      margin-left: auto;
+    }
+
+    .main-nav {
+      display: none !important;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      padding: 18px 20px 24px;
+      background: #fff;
+      border-bottom: 1px solid oklch(0.88 0.01 250);
+      box-shadow: 0 12px 25px oklch(0.2 0.03 250 / 0.12);
+      align-items: stretch !important;
+      flex-direction: column;
+      gap: 0 !important;
+    }
+
+    .main-nav.is-open {
+      display: flex !important;
+    }
+
+    .main-nav > a {
+      padding: 10px 4px;
+    }
+
+    body > div > section:nth-of-type(1) {
+      min-height: 600px !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    body > div > section {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+
+    body > div > section:nth-of-type(1) > div:last-child {
+      padding: 90px 20px 62px !important;
+    }
+
+    body > div > section:nth-of-type(1) h1 {
+      font-size: 38px !important;
+    }
+
+    body > div > section:nth-of-type(1) p {
+      font-size: 17px !important;
+    }
+
+    body > div > section.hero-split { padding: 0 !important; }
+
+    body > div > section.hero-split > .hero-media { padding: 0 !important; }
+
+    #servicos,
+    #obras,
+    #diferenciais,
+    #depoimentos,
+    #blog,
+    #contato {
+      padding-top: 72px !important;
+      padding-bottom: 72px !important;
+    }
+
+    #contato > div > div:last-child {
+      padding: 26px 20px !important;
+    }
+
+    body > div > footer {
+      padding: 58px 20px 28px !important;
+    }
+  }
+</style>

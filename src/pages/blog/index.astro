@@ -1,0 +1,79 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { posts } from '../../data/posts';
+import { site } from '../../config/site';
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': `${site.url}/blog/#blog`,
+  url: `${site.url}/blog/`,
+  name: `Blog ${site.name}`,
+  description: 'Conteúdos e orientações sobre impermeabilização, prevenção de infiltrações e cuidados com a construção civil.',
+  inLanguage: site.language,
+  publisher: { '@id': `${site.url}/#business` },
+};
+---
+<BlogLayout title="Blog" description="Conteúdos e orientações sobre impermeabilização, prevenção de infiltrações e cuidados com a construção civil." schema={blogSchema}>
+  <section class="blog-hero">
+    <div>
+      <p class="eyebrow">CONHECIMENTO TÉCNICO</p>
+      <h1>Blog RI Impermeabilização</h1>
+      <p>Informação para prevenir infiltrações, escolher o sistema correto e aumentar a vida útil da sua obra.</p>
+    </div>
+  </section>
+
+  <section class="posts-section">
+    <div class="posts-heading">
+      <div>
+        <p class="eyebrow">ARTIGOS</p>
+        <h2>Conteúdos recentes</h2>
+      </div>
+      <span>{posts.length} artigos</span>
+    </div>
+    <div class="posts-grid">
+      {posts.map((post) => (
+        <article class="post-card">
+          <a href={`/blog/${post.slug}`} aria-label={`Ler: ${post.title}`}>
+            <img src={post.image} alt={post.imageAlt} loading="lazy" />
+            <div class="post-card-body">
+              <div class="post-meta"><span>{post.category}</span><span>{post.readingTime}</span></div>
+              <h2>{post.title}</h2>
+              <p>{post.excerpt}</p>
+              <strong>Ler artigo <span aria-hidden="true">→</span></strong>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BlogLayout>
+
+<style>
+  .blog-hero { padding: 96px 32px; background: oklch(0.24 0.04 250); color: white; }
+  .blog-hero > div { max-width: 1240px; margin: auto; }
+  .eyebrow { margin: 0 0 16px; color: oklch(0.75 0.15 70); font: 500 11.5px/1.4 "IBM Plex Mono", monospace; letter-spacing: .14em; }
+  h1 { max-width: 780px; margin: 0 0 20px; font: 800 clamp(42px, 5vw, 68px)/1.04 Archivo, sans-serif; letter-spacing: -.03em; }
+  .blog-hero > div > p:last-child { max-width: 700px; margin: 0; color: oklch(0.88 0.01 250); font-size: 19px; line-height: 1.6; }
+  .posts-section { max-width: 1240px; margin: auto; padding: 88px 32px 104px; }
+  .posts-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 42px; }
+  .posts-heading h2 { margin: 0; color: oklch(0.26 0.04 250); font: 700 clamp(30px, 3vw, 42px)/1.1 Archivo, sans-serif; letter-spacing: -.025em; }
+  .posts-heading > span { color: oklch(0.52 0.015 250); font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+  .posts-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .post-card { overflow: hidden; background: white; border: 1px solid oklch(0.91 0.008 250); border-radius: 6px; transition: transform .18s ease, box-shadow .18s ease; }
+  .post-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px oklch(0.25 0.03 250 / .1); }
+  .post-card > a { display: block; height: 100%; color: inherit; }
+  .post-card img { display: block; width: 100%; height: 220px; object-fit: cover; }
+  .post-card-body { padding: 25px 25px 28px; }
+  .post-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 14px; color: oklch(0.55 0.07 250); font: 500 10.5px "IBM Plex Mono", monospace; letter-spacing: .07em; text-transform: uppercase; }
+  .post-card h2 { margin: 0 0 12px; color: oklch(0.27 0.04 250); font: 700 21px/1.25 Archivo, sans-serif; letter-spacing: -.015em; }
+  .post-card p { margin: 0 0 22px; color: oklch(0.5 0.015 250); font-size: 14.5px; line-height: 1.65; }
+  .post-card strong { color: oklch(0.42 0.11 250); font: 600 14px Archivo, sans-serif; }
+  @media (max-width: 900px) { .posts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) {
+    .blog-hero { padding: 72px 20px; }
+    .posts-section { padding: 68px 20px 80px; }
+    .posts-grid { grid-template-columns: 1fr; }
+    .posts-heading { align-items: flex-start; flex-direction: column; }
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  canonicalPath?: string;
+  titleTemplate?: boolean;
+  schema?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title,
+  description,
+  image = site.defaultImage,
+  imageAlt = 'RI Impermeabilização',
+  type = 'website',
+  canonicalPath = Astro.url.pathname,
+  titleTemplate = true,
+  schema,
+} = Astro.props;
+
+const pageTitle = titleTemplate ? `${title} | ${site.name}` : title;
+const canonicalUrl = new URL(canonicalPath, Astro.site ?? site.url);
+const imageUrl = new URL(image, Astro.site ?? site.url);
+const schemaJson = schema ? JSON.stringify(schema).replace(/</g, '\\u003c') : undefined;
+---
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<link rel="canonical" href={canonicalUrl} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:locale" content={site.locale} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={imageAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+{schemaJson && <script is:inline type="application/ld+json" set:html={schemaJson} />}

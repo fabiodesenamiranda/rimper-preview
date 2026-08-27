@@ -1,0 +1,138 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { posts, type Post } from '../../data/posts';
+import { site } from '../../config/site';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const currentIndex = posts.findIndex((item) => item.slug === post.slug);
+const previousPost = currentIndex > 0 ? posts[currentIndex - 1] : undefined;
+const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : undefined;
+const postUrl = `${site.url}/blog/${post.slug}/`;
+const articleSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${postUrl}#article`,
+    headline: post.title,
+    description: post.excerpt,
+    image: new URL(post.image, site.url).href,
+    url: postUrl,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+    inLanguage: site.language,
+    articleSection: post.category,
+    author: { '@id': `${site.url}/#business` },
+    publisher: {
+      '@id': `${site.url}/#business`,
+      '@type': 'Organization',
+      name: site.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${site.url}/images/logonovo.png`,
+      },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site.url}/blog/` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+    ],
+  },
+];
+---
+<BlogLayout title={post.title} description={post.excerpt} image={post.image} imageAlt={post.imageAlt} type="article" schema={articleSchema}>
+  <article>
+    <header class="article-hero">
+      <div class="article-heading">
+        <a class="back" href="/blog">← Voltar ao blog</a>
+        <div class="meta"><span>{post.category}</span><span>{post.readingTime}</span></div>
+        <h1>{post.title}</h1>
+        <p>{post.excerpt}</p>
+      </div>
+    </header>
+    <div class="cover"><img src={post.image} alt={post.imageAlt} /></div>
+    <div class="article-layout">
+      <div class="article-body">
+        {post.sections.map((section) => (
+          <section>
+            {section.heading && <h2>{section.heading}</h2>}
+            {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+            {section.items && (
+              <ol>
+                {section.items.map((item) => (
+                  <li><h3>{item.title}</h3><p>{item.text}</p></li>
+                ))}
+              </ol>
+            )}
+          </section>
+        ))}
+        <aside class="cta">
+          <div>
+            <span>PRECISA DE UMA AVALIAÇÃO?</span>
+            <h2>Fale com um especialista</h2>
+            <p>Conte onde está o problema e receba uma orientação para sua obra.</p>
+          </div>
+          <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
+        </aside>
+      </div>
+      <aside class="sidebar">
+        <span>NESTE BLOG</span>
+        <p>Conteúdos preparados para ajudar você a reconhecer problemas e tomar decisões mais seguras na sua obra.</p>
+        <a href="/blog">Ver todos os artigos →</a>
+      </aside>
+    </div>
+    <nav class="post-navigation" aria-label="Navegação entre artigos">
+      {previousPost ? <a href={`/blog/${previousPost.slug}`}><small>ARTIGO ANTERIOR</small><strong>← {previousPost.title}</strong></a> : <span />}
+      {nextPost ? <a href={`/blog/${nextPost.slug}`}><small>PRÓXIMO ARTIGO</small><strong>{nextPost.title} →</strong></a> : <span />}
+    </nav>
+  </article>
+</BlogLayout>
+
+<style>
+  .article-hero { padding: 72px 32px 64px; background: oklch(0.24 0.04 250); color: white; }
+  .article-heading { max-width: 900px; margin: auto; }
+  .back { display: inline-block; margin-bottom: 48px; color: oklch(0.82 0.04 250); font: 600 14px Archivo, sans-serif; }
+  .meta { display: flex; gap: 18px; margin-bottom: 20px; color: oklch(0.75 0.15 70); font: 500 11px "IBM Plex Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { margin: 0 0 22px; font: 800 clamp(38px, 5vw, 64px)/1.06 Archivo, sans-serif; letter-spacing: -.03em; text-wrap: balance; }
+  .article-heading > p { max-width: 760px; margin: 0; color: oklch(0.88 0.01 250); font-size: 18.5px; line-height: 1.65; }
+  .cover { max-width: 1100px; height: min(54vw, 580px); margin: 0 auto; }
+  .cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .article-layout { max-width: 1040px; margin: auto; padding: 80px 32px; display: grid; grid-template-columns: minmax(0, 720px) 240px; gap: 72px; align-items: start; }
+  .article-body section { margin-bottom: 48px; }
+  .article-body h2 { margin: 0 0 20px; color: oklch(0.26 0.04 250); font: 700 31px/1.2 Archivo, sans-serif; letter-spacing: -.02em; }
+  .article-body h3 { margin: 0 0 7px; color: oklch(0.28 0.04 250); font: 700 19px/1.35 Archivo, sans-serif; }
+  .article-body p { margin: 0 0 20px; color: oklch(0.39 0.015 250); font-size: 17px; line-height: 1.82; }
+  ol { margin: 0; padding-left: 27px; }
+  li { margin-bottom: 24px; padding-left: 8px; }
+  li::marker { color: oklch(0.55 0.11 250); font: 700 15px Archivo, sans-serif; }
+  li p { margin-bottom: 0 !important; }
+  .sidebar { position: sticky; top: 120px; padding: 24px; border-top: 3px solid oklch(0.75 0.15 70); background: white; }
+  .sidebar span, .cta span { color: oklch(0.55 0.07 250); font: 500 10.5px "IBM Plex Mono", monospace; letter-spacing: .1em; }
+  .sidebar p { color: oklch(0.5 0.015 250); font-size: 14px; line-height: 1.65; }
+  .sidebar a { font: 600 14px Archivo, sans-serif; }
+  .cta { margin-top: 64px; padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 28px; border-radius: 6px; background: oklch(0.92 0.08 75); }
+  .cta h2 { margin: 8px 0 !important; font-size: 26px !important; }
+  .cta p { margin: 0 !important; font-size: 15px; line-height: 1.55; }
+  .cta > a { flex: 0 0 auto; padding: 14px 18px; border-radius: 4px; background: oklch(0.3 0.07 250); color: white; font: 700 14px Archivo, sans-serif; }
+  .post-navigation { max-width: 1040px; margin: 0 auto 96px; padding: 36px 32px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; border-top: 1px solid oklch(0.88 0.01 250); }
+  .post-navigation a { display: grid; gap: 9px; }
+  .post-navigation a:last-child { text-align: right; }
+  .post-navigation small { color: oklch(0.58 0.02 250); font: 500 10px "IBM Plex Mono", monospace; letter-spacing: .1em; }
+  .post-navigation strong { color: oklch(0.32 0.06 250); font: 600 16px/1.4 Archivo, sans-serif; }
+  @media (max-width: 780px) {
+    .article-hero { padding: 56px 20px; }
+    .back { margin-bottom: 36px; }
+    .cover { height: 65vw; }
+    .article-layout { padding: 60px 20px; grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .cta { align-items: flex-start; flex-direction: column; }
+    .post-navigation { margin-bottom: 72px; padding-inline: 20px; gap: 28px; }
+  }
+</style>
