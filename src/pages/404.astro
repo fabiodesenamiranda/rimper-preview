@@ -1,0 +1,160 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+---
+
+<BlogLayout
+  title="Página não encontrada"
+  description="A página que você tentou acessar não foi encontrada."
+  noindex
+>
+  <section class="not-found">
+    <div class="not-found-inner">
+      <div class="error-code" aria-hidden="true">404</div>
+      <p class="eyebrow">Página não encontrada</p>
+      <h1>Este endereço não leva a lugar nenhum.</h1>
+      <p class="message">
+        A página pode ter mudado de endereço ou não existir mais. Você pode voltar ao início
+        ou conhecer nossos serviços de impermeabilização.
+      </p>
+      <div class="actions">
+        <a class="primary-action" href="/">Voltar para o início</a>
+        <a class="secondary-action" href="/#servicos">Ver nossos serviços</a>
+      </div>
+      <p class="help">
+        Precisa de ajuda? <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Fale conosco pelo WhatsApp</a>.
+      </p>
+    </div>
+  </section>
+</BlogLayout>
+
+<style>
+  .not-found {
+    position: relative;
+    isolation: isolate;
+    min-height: 620px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 88px 32px 104px;
+    background:
+      linear-gradient(120deg, oklch(0.98 0.01 250 / 0.96), oklch(0.94 0.025 250 / 0.9)),
+      url('/images/Banner-1920-x-700-px-1.png') center / cover;
+  }
+
+  .not-found::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, oklch(0.98 0.008 250) 0 40%, transparent 80%);
+  }
+
+  .not-found-inner {
+    width: min(100%, 760px);
+    margin-right: min(28vw, 340px);
+  }
+
+  .error-code {
+    margin-bottom: -24px;
+    color: oklch(0.42 0.11 250 / 0.12);
+    font: 800 clamp(104px, 18vw, 190px) / 0.9 Archivo, sans-serif;
+    letter-spacing: -0.08em;
+  }
+
+  .eyebrow {
+    margin: 0 0 14px;
+    color: oklch(0.44 0.13 250);
+    font: 700 13px / 1.4 "IBM Plex Mono", monospace;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 660px;
+    margin: 0;
+    color: oklch(0.25 0.04 250);
+    font: 800 clamp(38px, 5vw, 62px) / 1.06 Archivo, sans-serif;
+    letter-spacing: -0.035em;
+  }
+
+  .message {
+    max-width: 620px;
+    margin: 24px 0 0;
+    color: oklch(0.4 0.025 250);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .actions a {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 1px solid oklch(0.42 0.11 250);
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+
+  .actions a:hover {
+    transform: translateY(-2px);
+  }
+
+  .primary-action,
+  .primary-action:visited {
+    background: oklch(0.42 0.11 250);
+    color: white;
+  }
+
+  .primary-action:hover {
+    background: oklch(0.35 0.1 250);
+    color: white;
+  }
+
+  .secondary-action,
+  .secondary-action:visited {
+    background: oklch(0.99 0.002 250 / 0.78);
+    color: oklch(0.38 0.1 250);
+  }
+
+  .secondary-action:hover {
+    background: white;
+    color: oklch(0.32 0.1 250);
+  }
+
+  .help {
+    margin: 26px 0 0;
+    color: oklch(0.45 0.025 250);
+    font-size: 14px;
+  }
+
+  .help a {
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .not-found-inner { margin-right: 0; }
+  }
+
+  @media (max-width: 620px) {
+    .not-found {
+      min-height: 560px;
+      padding: 64px 20px 80px;
+      background: linear-gradient(145deg, oklch(0.98 0.01 250), oklch(0.91 0.035 250));
+    }
+
+    .error-code { margin-bottom: -12px; }
+    .actions { flex-direction: column; }
+    .actions a { width: 100%; }
+  }
+</style>

@@ -8,10 +8,11 @@ interface Props {
   image?: string;
   imageAlt?: string;
   type?: 'website' | 'article';
+  noindex?: boolean;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { title, description, image, imageAlt, type = 'website', schema } = Astro.props;
+const { title, description, image, imageAlt, type = 'website', noindex = false, schema } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 <!doctype html>
@@ -19,7 +20,7 @@ const currentPath = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <Seo {title} {description} {image} {imageAlt} {type} {schema} />
+    <Seo {title} {description} {image} {imageAlt} {type} {noindex} {schema} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Libre+Franklin:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
