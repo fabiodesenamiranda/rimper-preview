@@ -245,6 +245,11 @@ const localBusinessSchema = {
     position: relative;
   }
 
+  .hero-copy,
+  .hero-media {
+    min-width: 0;
+  }
+
   .service-card-link::after {
     content: "";
     position: absolute;
@@ -464,6 +469,10 @@ const localBusinessSchema = {
       display: flex !important;
     }
 
+    .hero-split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
     .how-it-works-inner {
       grid-template-columns: 1fr;
     }
@@ -487,17 +496,33 @@ const localBusinessSchema = {
   }
 
   @media (max-width: 640px) {
+    body > div > div:first-child > div > div:last-child {
+      gap: 8px !important;
+      justify-content: center !important;
+      font-size: 12px;
+    }
+
+    body > div > div:first-child > div > div:last-child > a:first-child,
+    body > div > div:first-child > div > div:last-child > span {
+      display: none;
+    }
+
+    body > div > div:first-child > div > div:last-child > a {
+      white-space: nowrap;
+    }
+
     body > div > section {
       padding-left: 20px !important;
       padding-right: 20px !important;
     }
 
-    body > div > section:nth-of-type(1) > div:last-child {
-      padding: 90px 20px 62px !important;
+    body > div > section:nth-of-type(1) > .hero-copy {
+      padding: 72px 20px 64px !important;
     }
 
     body > div > section:nth-of-type(1) h1 {
-      font-size: 38px !important;
+      font-size: clamp(30px, 9vw, 38px) !important;
+      overflow-wrap: break-word;
     }
 
     body > div > section:nth-of-type(1) p {
