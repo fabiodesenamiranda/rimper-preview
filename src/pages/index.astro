@@ -11,6 +11,7 @@ page = page
   .replace(/<sc-if[^>]*>/g, '')
   .replace(/<\/sc-if>/g, '')
   .replaceAll('href="/sitemap.xml"', 'href="/sitemap-index.xml"')
+  .replaceAll('href="#obras"', 'href="/obras"')
   .replace(
     '<nav style=',
     '<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="main-nav" style=',
@@ -222,6 +223,191 @@ const localBusinessSchema = {
     border-color: oklch(0.7 0.06 250) !important;
   }
 
+  .service-card-media {
+    height: 220px;
+    overflow: hidden;
+    background: oklch(0.9 0.012 250);
+  }
+
+  .service-card-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 420ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  article[style-hover]:hover .service-card-media img {
+    transform: scale(1.045);
+  }
+
+  .service-card {
+    position: relative;
+  }
+
+  .service-card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .service-card:focus-within {
+    outline: 3px solid oklch(0.65 0.12 250);
+    outline-offset: 3px;
+  }
+
+  .how-it-works {
+    padding: 104px 32px;
+    overflow: hidden;
+    background: oklch(0.24 0.04 250);
+    color: #fff;
+  }
+
+  .how-it-works-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 0.76fr) minmax(500px, 1.24fr);
+    gap: 54px 40px;
+    align-items: center;
+  }
+
+  .how-it-works-eyebrow {
+    margin-bottom: 16px;
+    color: oklch(0.75 0.15 70);
+    font: 500 11.5px/1.4 "IBM Plex Mono", monospace;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .how-it-works h2 {
+    max-width: 620px;
+    margin: 0 0 20px;
+    color: #fff;
+    font: 700 clamp(32px, 3.5vw, 48px)/1.07 Archivo, sans-serif;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  .how-it-works-intro {
+    max-width: 610px;
+    margin: 0 0 34px;
+    color: oklch(0.84 0.012 250);
+    font-size: 16.5px;
+    line-height: 1.7;
+  }
+
+  .layer-list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    list-style: none;
+  }
+
+  .layer-list li {
+    min-width: 0;
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    border: 1px solid oklch(0.43 0.035 250);
+    border-radius: 5px;
+    background: oklch(0.28 0.04 250 / 0.72);
+  }
+
+  .layer-list li > span {
+    flex: 0 0 auto;
+    color: oklch(0.75 0.15 70);
+    font: 600 11px/1.4 "IBM Plex Mono", monospace;
+  }
+
+  .layer-list li > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  .layer-list strong {
+    color: #fff;
+    font: 600 14px/1.3 Archivo, sans-serif;
+  }
+
+  .layer-list small {
+    color: oklch(0.72 0.012 250);
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+
+  .layers-visual {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid oklch(0.44 0.035 250);
+    border-radius: 8px;
+    background: #050607;
+    box-shadow: 0 24px 65px oklch(0.12 0.035 250 / 0.35);
+  }
+
+  .layers-visual::before {
+    content: "";
+    position: absolute;
+    inset: 9% 8%;
+    border-radius: 50%;
+    background: oklch(0.47 0.1 250 / 0.2);
+    filter: blur(50px);
+  }
+
+  .layers-visual img {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    mix-blend-mode: normal;
+  }
+
+  .how-it-works-benefits {
+    grid-column: 1 / -1;
+    padding-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    border-top: 1px solid oklch(0.4 0.035 250);
+  }
+
+  .how-it-works-benefits > div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .how-it-works-benefits > div > span {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid oklch(0.75 0.15 70);
+    border-radius: 50%;
+    color: oklch(0.75 0.15 70);
+    font-weight: 700;
+  }
+
+  .how-it-works-benefits > div > div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .how-it-works-benefits strong {
+    color: #fff;
+    font: 600 16px Archivo, sans-serif;
+  }
+
+  .how-it-works-benefits small {
+    color: oklch(0.72 0.012 250);
+    font-size: 12.5px;
+  }
+
   a[style-hover]:hover,
   button[style-hover]:hover {
     filter: brightness(1.08);
@@ -278,6 +464,19 @@ const localBusinessSchema = {
       display: flex !important;
     }
 
+    .how-it-works-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .layers-visual {
+      width: min(680px, 100%);
+      margin: 0 auto;
+    }
+
+    .how-it-works-benefits {
+      grid-column: auto;
+    }
+
     .main-nav > a {
       padding: 10px 4px;
     }
@@ -317,6 +516,19 @@ const localBusinessSchema = {
     #contato {
       padding-top: 72px !important;
       padding-bottom: 72px !important;
+    }
+
+    .how-it-works {
+      padding: 72px 20px;
+    }
+
+    .how-it-works-inner {
+      gap: 42px;
+    }
+
+    .layer-list,
+    .how-it-works-benefits {
+      grid-template-columns: 1fr;
     }
 
     #contato > div > div:last-child {

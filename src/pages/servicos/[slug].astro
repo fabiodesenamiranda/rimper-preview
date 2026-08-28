@@ -1,0 +1,296 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { services, type Service } from '../../data/servicos';
+import { site } from '../../config/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const serviceUrl = `${site.url}/servicos/${service.slug}/`;
+const currentIndex = services.findIndex((item) => item.slug === service.slug);
+const relatedServices = [1, 2, 3].map((offset) => services[(currentIndex + offset) % services.length]);
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${serviceUrl}#service`,
+    name: service.title,
+    description: service.description,
+    url: serviceUrl,
+    image: `${site.url}${service.heroImage}`,
+    provider: { '@id': `${site.url}/#business`, '@type': 'LocalBusiness', name: site.name },
+    areaServed: [
+      { '@type': 'City', name: 'Itu' },
+      { '@type': 'AdministrativeArea', name: 'Região de Sorocaba' },
+      { '@type': 'State', name: 'São Paulo' },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Serviços', item: `${site.url}/#servicos` },
+      { '@type': 'ListItem', position: 3, name: service.title, item: serviceUrl },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  title={service.title}
+  description={service.description}
+  image={service.heroImage}
+  imageAlt={service.heroAlt}
+  {schema}
+>
+  <article>
+    <header class="service-hero">
+      <div class="hero-copy">
+        <nav class="breadcrumbs" aria-label="Navegação estrutural">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/#servicos">Serviços</a>
+        </nav>
+        <p class="eyebrow">{service.eyebrow}</p>
+        <h1>{service.title}</h1>
+        <p class="hero-description">{service.description}</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Solicite uma avaliação</a>
+          <a class="secondary-action" href="#como-funciona">Como executamos <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <figure class="hero-image">
+        <img src={service.heroImage} alt={service.heroAlt} width="960" height="720" />
+        <figcaption>Obra executada pela RI Impermeabilização</figcaption>
+      </figure>
+    </header>
+
+    <section class="overview">
+      <div class="overview-copy">
+        <p class="eyebrow">DIAGNÓSTICO E SOLUÇÃO</p>
+        <h2>Proteção adequada começa pela origem do problema</h2>
+        <p>{service.introduction}</p>
+      </div>
+      <aside class="contact-card">
+        <span>ATENDIMENTO TÉCNICO</span>
+        <strong>Itu, São Paulo e região</strong>
+        <p>Conte o que está acontecendo e envie fotos para uma orientação inicial.</p>
+        <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp →</a>
+      </aside>
+    </section>
+
+    <section class="details-grid">
+      <div class="detail-block">
+        <p class="eyebrow">SINAIS DE ATENÇÃO</p>
+        <h2>Problemas que avaliamos</h2>
+        <ul>
+          {service.problems.map((problem) => <li>{problem}</li>)}
+        </ul>
+      </div>
+      <div class="detail-block systems">
+        <p class="eyebrow">SISTEMAS</p>
+        <h2>Soluções possíveis</h2>
+        <ul>
+          {service.systems.map((system) => <li>{system}</li>)}
+        </ul>
+        <small>A especificação final depende da avaliação da estrutura e das condições de uso.</small>
+      </div>
+    </section>
+
+    <section class="process" id="como-funciona">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PROCESSO DE EXECUÇÃO</p>
+          <h2>Como realizamos o serviço</h2>
+        </div>
+        <p>Cada etapa é importante para garantir a continuidade e o desempenho do sistema.</p>
+      </div>
+      <ol class="steps">
+        {service.steps.map((step, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="benefits">
+      <div>
+        <p class="eyebrow">POR QUE IMPERMEABILIZAR</p>
+        <h2>Proteção que evita danos maiores</h2>
+      </div>
+      <ul>
+        {service.benefits.map((benefit) => <li><span aria-hidden="true">✓</span>{benefit}</li>)}
+      </ul>
+    </section>
+
+    <section class="related-work">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">OBRAS REALIZADAS</p>
+          <h2>Experiência aplicada na prática</h2>
+        </div>
+        <a href="/obras">Ver todas as obras →</a>
+      </div>
+      <div class="work-images">
+        {service.relatedImages.map((image) => <img src={image.src} alt={image.alt} loading="lazy" />)}
+      </div>
+    </section>
+
+    <section class="faq-section">
+      <div class="faq-heading">
+        <p class="eyebrow">DÚVIDAS FREQUENTES</p>
+        <h2>Perguntas sobre {service.eyebrow.toLowerCase()}</h2>
+      </div>
+      <div class="faq-list">
+        {service.faqs.map((faq, index) => (
+          <details open={index === 0}>
+            <summary>{faq.question}<span aria-hidden="true">+</span></summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="service-cta">
+      <div>
+        <p class="eyebrow">FALE COM UM ESPECIALISTA</p>
+        <h2>Vamos avaliar sua obra?</h2>
+        <p>Envie uma mensagem com informações sobre o local e receba orientação da nossa equipe.</p>
+      </div>
+      <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Solicite um orçamento <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="more-services">
+      <p class="eyebrow">OUTROS SERVIÇOS</p>
+      <div>
+        {relatedServices.map((related) => (
+          <a href={`/servicos/${related.slug}`}><span>{related.eyebrow}</span><strong>{related.title}</strong><small>Conhecer serviço →</small></a>
+        ))}
+      </div>
+    </section>
+  </article>
+</BlogLayout>
+
+<style>
+  .eyebrow { margin: 0 0 14px; color: oklch(0.65 0.12 70); font: 500 11px/1.4 "IBM Plex Mono", monospace; letter-spacing: .14em; text-transform: uppercase; }
+  .service-hero { min-height: 620px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(440px, .9fr); background: oklch(0.24 0.04 250); color: white; }
+  .hero-copy { padding: clamp(64px, 8vw, 116px) clamp(32px, 7vw, 110px); align-self: center; }
+  .breadcrumbs { margin-bottom: 54px; display: flex; gap: 10px; color: oklch(0.62 0.02 250); font-size: 12px; }
+  .breadcrumbs a { color: oklch(0.78 0.015 250); }
+  h1 { max-width: 760px; margin: 0 0 24px; font: 800 clamp(40px, 5vw, 68px)/1.02 Archivo, sans-serif; letter-spacing: -.038em; text-wrap: balance; }
+  .hero-description { max-width: 690px; margin: 0; color: oklch(0.86 0.01 250); font-size: 18px; line-height: 1.68; }
+  .hero-actions { margin-top: 38px; display: flex; flex-wrap: wrap; gap: 13px; }
+  .hero-actions a { padding: 15px 20px; border-radius: 4px; font: 700 14px Archivo, sans-serif; }
+  .primary-action { background: oklch(0.75 0.15 70); color: oklch(0.22 0.04 70); }
+  .secondary-action { border: 1px solid oklch(0.75 0.02 250 / .6); color: white; }
+  .hero-image { position: relative; min-height: 520px; margin: 0; overflow: hidden; }
+  .hero-image img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .hero-image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, oklch(0.24 0.04 250 / .25), transparent 40%); pointer-events: none; }
+  .hero-image figcaption { position: absolute; z-index: 1; right: 20px; bottom: 20px; padding: 8px 11px; background: oklch(0.17 0.03 250 / .8); color: oklch(0.88 0.01 250); font: 500 10px "IBM Plex Mono", monospace; letter-spacing: .06em; }
+  .overview, .details-grid, .process, .benefits, .related-work, .faq-section, .more-services { max-width: 1240px; margin: auto; padding-inline: 32px; }
+  .overview { padding-top: 96px; padding-bottom: 96px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 90px; align-items: start; }
+  .overview h2, .section-heading h2, .benefits h2, .faq-heading h2, .service-cta h2 { margin: 0; color: oklch(0.25 0.04 250); font: 700 clamp(30px, 3.5vw, 46px)/1.1 Archivo, sans-serif; letter-spacing: -.027em; text-wrap: balance; }
+  .overview-copy > p:last-child { max-width: 760px; margin: 23px 0 0; color: oklch(0.4 0.018 250); font-size: 17px; line-height: 1.82; }
+  .contact-card { padding: 28px; border-top: 4px solid oklch(0.75 0.15 70); background: white; box-shadow: 0 16px 40px oklch(0.25 0.03 250 / .08); }
+  .contact-card > span { color: oklch(0.55 0.07 250); font: 500 10px "IBM Plex Mono", monospace; letter-spacing: .12em; }
+  .contact-card strong { display: block; margin: 14px 0 10px; color: oklch(0.28 0.04 250); font: 700 20px Archivo, sans-serif; }
+  .contact-card p { margin: 0 0 20px; color: oklch(0.48 0.015 250); font-size: 14px; line-height: 1.6; }
+  .contact-card a { font: 600 14px Archivo, sans-serif; }
+  .details-grid { padding-bottom: 104px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .detail-block { padding: clamp(30px, 4vw, 48px); border-radius: 6px; background: oklch(0.93 0.012 250); }
+  .detail-block.systems { background: oklch(0.9 0.07 75); }
+  .detail-block h2 { margin: 0 0 28px; color: oklch(0.26 0.04 250); font: 700 29px/1.15 Archivo, sans-serif; letter-spacing: -.02em; }
+  .detail-block ul { margin: 0; padding: 0; display: grid; gap: 0; list-style: none; }
+  .detail-block li { padding: 13px 0; border-bottom: 1px solid oklch(0.82 0.015 250); color: oklch(0.35 0.02 250); font-size: 15px; }
+  .detail-block li::before { content: "—"; margin-right: 11px; color: oklch(0.55 0.1 250); }
+  .detail-block > small { display: block; margin-top: 20px; color: oklch(0.48 0.02 250); font-size: 12px; line-height: 1.55; }
+  .process { padding-top: 96px; padding-bottom: 108px; }
+  .section-heading { margin-bottom: 42px; display: flex; justify-content: space-between; align-items: flex-end; gap: 50px; }
+  .section-heading > p { max-width: 420px; margin: 0 0 3px; color: oklch(0.48 0.015 250); font-size: 15px; line-height: 1.65; }
+  .section-heading > a { flex: 0 0 auto; font: 600 14px Archivo, sans-serif; }
+  .steps { margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); list-style: none; counter-reset: none; }
+  .steps li { min-height: 260px; padding: 28px; border: 1px solid oklch(0.88 0.01 250); border-right: 0; background: white; }
+  .steps li:last-child { border-right: 1px solid oklch(0.88 0.01 250); }
+  .steps span { color: oklch(0.65 0.12 70); font: 500 11px "IBM Plex Mono", monospace; }
+  .steps h3 { margin: 45px 0 13px; color: oklch(0.28 0.04 250); font: 700 20px/1.25 Archivo, sans-serif; }
+  .steps p { margin: 0; color: oklch(0.48 0.015 250); font-size: 14px; line-height: 1.65; }
+  .benefits { max-width: none; padding: 78px max(32px, calc((100vw - 1176px) / 2)); display: grid; grid-template-columns: .9fr 1.1fr; gap: 90px; background: oklch(0.24 0.04 250); color: white; }
+  .benefits h2 { color: white; }
+  .benefits ul { margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; list-style: none; }
+  .benefits li { padding: 18px; display: flex; align-items: center; gap: 12px; border: 1px solid oklch(0.4 0.035 250); border-radius: 4px; color: oklch(0.9 0.01 250); font-size: 14px; }
+  .benefits li span { color: oklch(0.75 0.15 70); font-weight: 700; }
+  .related-work { padding-top: 104px; padding-bottom: 104px; }
+  .work-images { display: grid; grid-template-columns: 1.2fr .8fr .8fr; gap: 16px; }
+  .work-images img { width: 100%; height: 360px; display: block; object-fit: cover; border-radius: 5px; }
+  .faq-section { padding-bottom: 104px; display: grid; grid-template-columns: 360px 1fr; gap: 90px; }
+  .faq-list { border-top: 1px solid oklch(0.84 0.01 250); }
+  details { border-bottom: 1px solid oklch(0.84 0.01 250); }
+  summary { padding: 23px 0; display: flex; justify-content: space-between; gap: 24px; color: oklch(0.3 0.035 250); font: 600 16px/1.4 Archivo, sans-serif; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary span { color: oklch(0.55 0.1 250); font-size: 20px; transition: transform .2s ease; }
+  details[open] summary span { transform: rotate(45deg); }
+  details p { max-width: 720px; margin: -4px 40px 24px 0; color: oklch(0.47 0.015 250); font-size: 14.5px; line-height: 1.7; }
+  .service-cta { max-width: 1176px; margin: 0 auto 104px; padding: clamp(36px, 5vw, 58px); display: flex; align-items: flex-end; justify-content: space-between; gap: 44px; border-radius: 6px; background: oklch(0.9 0.07 75); }
+  .service-cta > div > p:last-child { max-width: 620px; margin: 16px 0 0; color: oklch(0.42 0.02 250); line-height: 1.65; }
+  .service-cta > a { flex: 0 0 auto; padding: 16px 20px; border-radius: 4px; background: oklch(0.3 0.07 250); color: white; font: 700 14px Archivo, sans-serif; }
+  .more-services { padding-bottom: 104px; }
+  .more-services > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .more-services a { min-height: 180px; padding: 27px; display: flex; flex-direction: column; border: 1px solid oklch(0.88 0.01 250); border-radius: 5px; background: white; color: inherit; transition: transform .18s ease, border-color .18s ease; }
+  .more-services a:hover { transform: translateY(-3px); border-color: oklch(0.6 0.07 250); }
+  .more-services a > span { color: oklch(0.56 0.08 250); font: 500 10px "IBM Plex Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+  .more-services a > strong { margin: 18px 0; color: oklch(0.28 0.04 250); font: 700 19px/1.3 Archivo, sans-serif; }
+  .more-services a > small { margin-top: auto; color: oklch(0.48 0.09 250); font: 600 12px Archivo, sans-serif; }
+  @media (max-width: 960px) {
+    .service-hero { grid-template-columns: 1fr; }
+    .hero-image { min-height: 480px; }
+    .overview { grid-template-columns: 1fr; gap: 42px; }
+    .contact-card { max-width: 520px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .steps li:nth-child(2) { border-right: 1px solid oklch(0.88 0.01 250); }
+    .steps li:nth-child(n + 3) { border-top: 0; }
+    .benefits { grid-template-columns: 1fr; gap: 42px; }
+    .faq-section { grid-template-columns: 1fr; gap: 38px; }
+  }
+  @media (max-width: 640px) {
+    .service-hero { min-height: auto; }
+    .hero-copy { padding: 58px 20px 64px; }
+    .breadcrumbs { margin-bottom: 38px; }
+    .hero-image { min-height: 330px; }
+    .overview, .details-grid, .process, .related-work, .faq-section, .more-services { padding-inline: 20px; }
+    .overview { padding-top: 68px; padding-bottom: 68px; }
+    .details-grid { padding-bottom: 72px; grid-template-columns: 1fr; }
+    .process { padding-top: 68px; padding-bottom: 76px; }
+    .section-heading { align-items: flex-start; flex-direction: column; gap: 18px; }
+    .steps { grid-template-columns: 1fr; }
+    .steps li, .steps li:nth-child(2) { min-height: 0; border-right: 1px solid oklch(0.88 0.01 250); border-bottom: 0; }
+    .steps li:last-child { border-bottom: 1px solid oklch(0.88 0.01 250); }
+    .steps h3 { margin-top: 25px; }
+    .benefits { padding: 64px 20px; }
+    .benefits ul { grid-template-columns: 1fr; }
+    .related-work { padding-top: 72px; padding-bottom: 72px; }
+    .work-images { grid-template-columns: 1fr; }
+    .work-images img { height: 290px; }
+    .faq-section { padding-bottom: 72px; }
+    .service-cta { margin: 0 20px 72px; padding: 32px 24px; align-items: flex-start; flex-direction: column; }
+    .service-cta > a { width: 100%; text-align: center; }
+    .more-services { padding-bottom: 72px; }
+    .more-services > div { grid-template-columns: 1fr; }
+  }
+</style>

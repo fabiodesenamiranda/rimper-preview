@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { title, description, image, imageAlt, type = 'website', schema } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -46,8 +47,8 @@ const { title, description, image, imageAlt, type = 'website', schema } = Astro.
         </a>
         <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
         <nav class="site-nav" aria-label="Navegação principal">
-          <a href="/#servicos">Serviços</a>
-          <a href="/#obras">Obras realizadas</a>
+          <a href="/#servicos" aria-current={currentPath.startsWith('/servicos') ? 'page' : undefined}>Serviços</a>
+          <a href="/obras" aria-current={currentPath.startsWith('/obras') ? 'page' : undefined}>Obras realizadas</a>
           <a href="/#diferenciais">Diferenciais</a>
           <a href="/#depoimentos">Depoimentos</a>
           <a href="/blog">Blog</a>
@@ -71,6 +72,7 @@ const { title, description, image, imageAlt, type = 'website', schema } = Astro.
         </div>
         <div class="footer-links">
           <a href="/">Início</a>
+          <a href="/obras">Obras realizadas</a>
           <a href="/blog">Blog</a>
           <a href="/#contato">Contato</a>
         </div>
@@ -122,6 +124,7 @@ const { title, description, image, imageAlt, type = 'website', schema } = Astro.
   .brand img { width: 62px; height: 60px; object-fit: contain; }
   .site-nav { display: flex; align-items: center; gap: 24px; font-size: 14.5px; font-weight: 500; }
   .site-nav a { color: oklch(0.35 0.02 250); }
+  .site-nav a[aria-current="page"] { color: oklch(0.42 0.11 250); font-weight: 700; }
   .site-nav > .quote,
   .site-nav > .quote:visited { padding: 12px 18px; border-radius: 4px; background: oklch(0.42 0.11 250); color: #fff !important; font-weight: 600; }
   .site-nav > .quote:hover,
@@ -130,6 +133,7 @@ const { title, description, image, imageAlt, type = 'website', schema } = Astro.
   footer { padding: 64px 32px 28px; background: oklch(0.22 0.035 250); color: oklch(0.8 0.015 250); }
   .footer-inner { max-width: 1240px; margin: auto; display: flex; justify-content: space-between; gap: 48px; padding-bottom: 44px; border-bottom: 1px solid oklch(0.32 0.03 250); }
   .footer-brand { color: white; }
+  .footer-brand img { filter: brightness(0) invert(1); }
   .footer-inner p { max-width: 450px; line-height: 1.65; }
   .footer-links { display: flex; align-items: flex-start; gap: 24px; }
   .footer-links a { color: oklch(0.88 0.01 250); }
