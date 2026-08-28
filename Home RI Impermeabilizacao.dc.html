@@ -22,6 +22,10 @@
   .hero-media { position: relative; min-height: 660px; overflow: hidden; }
   .hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, oklch(0.24 0.04 250) 0%, transparent 18%); pointer-events: none; }
   .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .authority-grid { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .authority-item { padding: 30px 28px; border-right: 1px solid oklch(0.93 0.008 250); }
+  .authority-item:first-child { padding-left: 0; }
+  .authority-item:last-child { padding-right: 0; border-right: 0; }
   .blog-carousel-controls { display: flex; gap: 10px; }
   .blog-carousel-button { width: 44px; height: 44px; border: 1px solid oklch(0.82 0.02 250); border-radius: 50%; display: grid; place-items: center; background: #fff; color: oklch(0.35 0.08 250); font: 600 20px/1 Archivo, sans-serif; cursor: pointer; }
   .blog-carousel-button:hover { border-color: oklch(0.55 0.1 250); background: oklch(0.96 0.008 250); }
@@ -94,8 +98,18 @@
     .reviews-summary { max-width: 360px; }
     .reviews-track { grid-auto-columns: calc((100% - 20px) / 2); }
     .partners-track { grid-auto-columns: calc((100% - 32px) / 3); }
+    .authority-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .authority-item { padding: 24px 20px; border-bottom: 1px solid oklch(0.93 0.008 250); }
+    .authority-item:first-child { padding-left: 0; }
+    .authority-item:nth-child(2) { padding-right: 0; border-right: 0; }
+    .authority-item:nth-child(3) { padding-left: 0; border-bottom: 0; }
+    .authority-item:last-child { padding-right: 0; border-bottom: 0; }
   }
   @media (max-width: 580px) {
+    .authority-grid { padding: 0 20px; }
+    .authority-item { min-width: 0; padding: 22px 14px; }
+    .authority-item > div:first-child { font-size: 15px !important; line-height: 1.25; }
+    .authority-item > div:last-child { font-size: 13px !important; line-height: 1.45; }
     .blog-track { grid-auto-columns: 100%; }
     .reviews-carousel { padding: 0 28px; }
     .reviews-track { grid-auto-columns: 100%; }
@@ -169,20 +183,20 @@
 
   <sc-if value="{{ mostrarAutoridade }}" hint-placeholder-val="{{ true }}">
   <section style="background:oklch(0.995 0.002 250); border-bottom:1px solid oklch(0.91 0.008 250)">
-    <div style="max-width:1240px; margin:0 auto; padding:0 32px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr))">
-      <div style="padding:30px 28px 30px 0; border-right:1px solid oklch(0.93 0.008 250)">
+    <div class="authority-grid">
+      <div class="authority-item">
         <div style="font-family:Archivo, sans-serif; font-weight:700; font-size:17px; color:oklch(0.3 0.04 250); margin-bottom:5px">+30 anos de experiência</div>
         <div style="font-size:14px; color:oklch(0.52 0.015 250)">Obras residenciais, comerciais e industriais</div>
       </div>
-      <div style="padding:30px 28px; border-right:1px solid oklch(0.93 0.008 250)">
+      <div class="authority-item">
         <div style="font-family:Archivo, sans-serif; font-weight:700; font-size:17px; color:oklch(0.3 0.04 250); margin-bottom:5px">Empresa registrada no CREA</div>
         <div style="font-size:14px; color:oklch(0.52 0.015 250)">Engenheiro civil responsável</div>
       </div>
-      <div style="padding:30px 28px; border-right:1px solid oklch(0.93 0.008 250)">
+      <div class="authority-item">
         <div style="font-family:Archivo, sans-serif; font-weight:700; font-size:17px; color:oklch(0.3 0.04 250); margin-bottom:5px">5 anos de garantia</div>
         <div style="font-size:14px; color:oklch(0.52 0.015 250)">Conforme normas ABNT NBR</div>
       </div>
-      <div style="padding:30px 0 30px 28px">
+      <div class="authority-item">
         <div style="font-family:Archivo, sans-serif; font-weight:700; font-size:17px; color:oklch(0.3 0.04 250); margin-bottom:5px">Atendimento</div>
         <div style="font-size:14px; color:oklch(0.52 0.015 250)">Itu, São Paulo e região</div>
       </div>
