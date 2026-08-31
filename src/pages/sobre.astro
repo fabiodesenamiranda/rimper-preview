@@ -1,0 +1,58 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { site, whatsappUrl } from '../config/site';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `Sobre a ${site.name}`,
+  url: `${site.url}/sobre/`,
+  description: 'Conheça a atuação, o processo de trabalho e a estrutura da RI Impermeabilização.',
+};
+---
+<BlogLayout title="Sobre a empresa" description="Conheça a atuação, o processo de trabalho e a estrutura da RI Impermeabilização." schema={schema}>
+  <section class="about-hero">
+    <div><p class="eyebrow">RI IMPERMEABILIZAÇÃO</p><h1>Experiência aplicada em cada etapa da obra</h1><p>Atuação em impermeabilização residencial, comercial e industrial, do diagnóstico da origem até a conferência da execução.</p></div>
+  </section>
+  <section class="intro">
+    <div class="copy">
+      <p class="eyebrow">QUEM SOMOS</p>
+      <h2>Proteção técnica para estruturas expostas à água e à umidade</h2>
+      <p>A RI Impermeabilização atende Itu, São Paulo e outras regiões, executando soluções para lajes, piscinas, reservatórios, fundações, áreas molhadas, sacadas, beirais e muros de arrimo.</p>
+      <p>Cada atendimento começa pela compreensão do problema e das condições da estrutura. A especificação considera o uso da área, a movimentação, a exposição e o acabamento previsto.</p>
+      <p>A empresa é registrada no CREA e trabalha de acordo com as normas técnicas aplicáveis.</p>
+    </div>
+    <figure><img src="/images/Banner-1920-x-700-px-1.png" alt="Profissional uniformizado da RI aplicando impermeabilização em uma cobertura" /><figcaption>Equipe uniformizada e execução com ferramentas adequadas ao sistema aplicado.</figcaption></figure>
+  </section>
+  <section class="method">
+    <div><p class="eyebrow">COMO TRABALHAMOS</p><h2>Processo claro, do diagnóstico à entrega</h2></div>
+    <ol>
+      <li><strong>1. Avaliação</strong><span>Levantamento da origem, das condições da base e dos pontos críticos.</span></li>
+      <li><strong>2. Especificação</strong><span>Escolha do sistema compatível com a estrutura e com o uso da área.</span></li>
+      <li><strong>3. Preparação</strong><span>Limpeza, correções, regularização e detalhamento dos encontros.</span></li>
+      <li><strong>4. Execução</strong><span>Aplicação controlada, conferência dos arremates e orientação sobre as próximas etapas.</span></li>
+    </ol>
+  </section>
+  <section class="about-cta"><div><p class="eyebrow">FALE COM A RI</p><h2>Vamos avaliar sua obra?</h2><p>Conte onde está o problema e envie fotos para uma primeira orientação.</p></div><a href={whatsappUrl('página Sobre')} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp →</a></section>
+</BlogLayout>
+
+<style>
+  .about-hero { padding: 96px 32px; background: oklch(0.24 0.04 250); color: white; }
+  .about-hero > div, .intro, .method, .about-cta { max-width: 1240px; margin: auto; }
+  .eyebrow { margin: 0 0 14px; color: oklch(0.65 0.12 70); font: 500 11px/1.4 "IBM Plex Mono", monospace; letter-spacing: .14em; }
+  h1 { max-width: 850px; margin: 0 0 22px; font: 800 clamp(40px, 5vw, 68px)/1.04 Archivo, sans-serif; letter-spacing: -.03em; }
+  .about-hero p:last-child { max-width: 730px; margin: 0; color: oklch(0.88 0.01 250); font-size: 19px; line-height: 1.65; }
+  .intro { padding: 96px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  h2 { margin: 0 0 24px; color: oklch(0.27 0.04 250); font: 700 clamp(30px, 3.3vw, 46px)/1.1 Archivo, sans-serif; letter-spacing: -.025em; }
+  .copy > p:not(.eyebrow) { color: oklch(0.42 0.015 250); font-size: 17px; line-height: 1.78; }
+  figure { margin: 0; } figure img { width: 100%; display: block; border-radius: 6px; } figcaption { margin-top: 12px; color: oklch(0.52 0.02 250); font-size: 13px; line-height: 1.5; }
+  .method { padding: 0 32px 104px; } .method > div { max-width: 700px; }
+  ol { list-style: none; margin: 42px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid oklch(0.88 0.01 250); }
+  li { min-height: 210px; padding: 28px; display: flex; flex-direction: column; gap: 17px; border-right: 1px solid oklch(0.88 0.01 250); } li:last-child { border: 0; }
+  li strong { color: oklch(0.36 0.09 250); font: 700 19px Archivo, sans-serif; } li span { color: oklch(0.48 0.02 250); line-height: 1.65; }
+  .about-cta { margin-bottom: 96px; padding: 42px; display: flex; justify-content: space-between; align-items: center; gap: 36px; background: oklch(0.92 0.08 75); border-radius: 6px; }
+  .about-cta h2 { margin-bottom: 10px; } .about-cta p:last-child { margin: 0; line-height: 1.6; }
+  .about-cta a { flex: 0 0 auto; padding: 16px 22px; background: oklch(0.3 0.07 250); color: white; border-radius: 4px; font-weight: 700; }
+  @media (max-width: 800px) { .intro { grid-template-columns: 1fr; } ol { grid-template-columns: 1fr 1fr; } li:nth-child(2) { border-right: 0; } li:nth-child(-n+2) { border-bottom: 1px solid oklch(0.88 0.01 250); } .about-cta { margin-inline: 20px; align-items: flex-start; flex-direction: column; } }
+  @media (max-width: 520px) { .about-hero { padding: 72px 20px; } .intro, .method { padding-inline: 20px; } ol { grid-template-columns: 1fr; } li { min-height: 0; border-right: 0; border-bottom: 1px solid oklch(0.88 0.01 250) !important; } li:last-child { border-bottom: 0 !important; } }
+</style>

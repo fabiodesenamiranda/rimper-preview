@@ -1,10 +1,35 @@
 ---
 import source from '../../Home RI Impermeabilizacao.dc.html?raw';
 import Seo from '../components/Seo.astro';
-import { site } from '../config/site';
+import { contact, site, whatsappUrl } from '../config/site';
+import { workCases } from '../data/cases';
 
 const helmet = source.match(/<helmet>([\s\S]*?)<\/helmet>/)?.[1] ?? '';
 let page = source.match(/<x-dc>([\s\S]*?)<\/x-dc>/)?.[1] ?? '';
+
+const casesSection = `
+  <section id="obras" class="home-cases">
+    <div class="home-cases-inner">
+      <div class="home-cases-heading">
+        <div><span>OBRAS DOCUMENTADAS</span><h2>Etapas reais, da preparação ao sistema aplicado</h2></div>
+        <p>Conheça sequências da mesma obra e veja o problema, a solução, o processo e o resultado registrado pela nossa equipe.</p>
+      </div>
+      <div class="home-cases-grid">
+        ${workCases.map((workCase) => {
+          const first = workCase.images[0];
+          const last = workCase.images.at(-1)!;
+          return `<article class="home-case-card">
+            <div class="home-case-images">
+              <figure><img src="${first.image.src}" alt="${first.alt}" loading="lazy" /><span>ANTES DA APLICAÇÃO</span></figure>
+              <figure><img src="${last.image.src}" alt="${last.alt}" loading="lazy" /><span>SISTEMA APLICADO</span></figure>
+            </div>
+            <div class="home-case-copy"><small>${workCase.category} · ${workCase.location}</small><h3>${workCase.title}</h3><p>${workCase.summary}</p><a href="/obras/${workCase.slug}">Ver caso completo →</a></div>
+          </article>`;
+        }).join('')}
+      </div>
+      <a class="home-cases-all" href="/obras">Ver todas as obras →</a>
+    </div>
+  </section>`;
 
 page = page
   .replace(/<helmet>[\s\S]*?<\/helmet>/, '')
@@ -12,6 +37,18 @@ page = page
   .replace(/<\/sc-if>/g, '')
   .replaceAll('href="/sitemap.xml"', 'href="/sitemap-index.xml"')
   .replaceAll('href="#obras"', 'href="/obras"')
+  .replace(/<section id="obras"[\s\S]*?<\/section>/, casesSection)
+  .replaceAll('https://wa.me/5511917351151', whatsappUrl('home'))
+  .replaceAll('tel:+551140131615', contact.phoneHref)
+  .replaceAll('rimpermeabilizacaoadm@gmail.com', site.email)
+  .replaceAll('https://www.facebook.com/Reginaldo.negocio', site.links.facebook)
+  .replaceAll('https://www.instagram.com/rimpermeabilizacao/', site.links.instagram)
+  .replaceAll('https://www.google.com/maps/search/?api=1&amp;query=Google&amp;query_place_id=ChIJwfIcwmSH5KYR7sWqpgC2vxI', site.links.googleBusiness)
+  .replaceAll('https://www.google.com/maps?q=Rua+Paulo+Souza,+395+B,+Centro,+Itu,+SP&amp;z=16&amp;output=embed', site.links.mapEmbed)
+  .replaceAll('Rua Paulo Souza, 395 B Sobre loja — Centro, Itu · SP', contact.addressLine)
+  .replaceAll('Rua Paulo Souza, 395 B Sobre loja<br />Centro, Itu · SP', `${site.address.streetAddress}<br />${site.address.addressLocality} · ${site.address.addressRegion}`)
+  .replaceAll('Rua+Paulo+Souza,+395+B,+Centro,+Itu,+SP', 'Rua+Paula+Souza,+395+B,+Centro,+Itu,+SP')
+  .replaceAll('WHATSAPP_NUMBER', site.whatsappNumber)
   .replace(
     '<nav style=',
     '<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="main-nav" style=',
@@ -79,10 +116,24 @@ const localBusinessSchema = {
       const form = document.querySelector('#contato form');
       form?.addEventListener('submit', (event) => {
         event.preventDefault();
+        if (!(form instanceof HTMLFormElement) || !form.reportValidity()) return;
+        const data = new FormData(form);
+        const message = [
+          'Olá! Vim pelo formulário do site da RI Impermeabilização.',
+          '',
+          `Nome: ${data.get('nome') ?? ''}`,
+          `WhatsApp: ${data.get('whatsapp') ?? ''}`,
+          `Cidade: ${data.get('cidade') ?? ''}`,
+          `Tipo de serviço: ${data.get('servico') ?? ''}`,
+          `Descrição: ${data.get('descricao') ?? ''}`,
+        ].join('\n');
+        const number = form.dataset.whatsappNumber;
+        if (!number) return;
         const button = form.querySelector('.form-submit');
         if (button instanceof HTMLButtonElement) {
-          button.textContent = 'Solicitação recebida!';
-          button.disabled = true;
+          button.textContent = 'Abrindo o WhatsApp…';
+          window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+          window.setTimeout(() => { button.textContent = 'Enviar solicitação pelo WhatsApp'; }, 1200);
         }
       });
 
@@ -244,6 +295,26 @@ const localBusinessSchema = {
   .service-card {
     position: relative;
   }
+
+  .home-cases { padding: 104px 32px; background: oklch(0.24 0.04 250); }
+  .home-cases-inner { max-width: 1240px; margin: auto; }
+  .home-cases-heading { display: grid; grid-template-columns: 1fr minmax(300px, 480px); gap: 64px; align-items: end; margin-bottom: 46px; }
+  .home-cases-heading span { display: block; margin-bottom: 16px; color: oklch(0.75 0.15 70); font: 500 11.5px/1.4 "IBM Plex Mono", monospace; letter-spacing: .14em; }
+  .home-cases-heading h2 { margin: 0; color: white; font: 700 clamp(30px, 3.2vw, 46px)/1.08 Archivo, sans-serif; letter-spacing: -.025em; }
+  .home-cases-heading > p { margin: 0; color: oklch(0.85 0.01 250); font-size: 17px; line-height: 1.7; }
+  .home-cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .home-case-card { overflow: hidden; border-radius: 6px; background: oklch(0.29 0.035 250); }
+  .home-case-images { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .home-case-images figure { position: relative; height: 270px; margin: 0; overflow: hidden; }
+  .home-case-images img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .home-case-images span { position: absolute; top: 12px; left: 12px; padding: 6px 8px; border-radius: 2px; background: oklch(0.2 0.03 250 / .82); color: white; font: 600 9.5px "IBM Plex Mono", monospace; letter-spacing: .09em; }
+  .home-case-images figure:last-child span { background: oklch(0.75 0.15 70); color: oklch(0.22 0.05 70); }
+  .home-case-copy { padding: 28px; }
+  .home-case-copy small { color: oklch(0.72 0.05 250); font: 500 10.5px "IBM Plex Mono", monospace; letter-spacing: .09em; text-transform: uppercase; }
+  .home-case-copy h3 { margin: 11px 0 10px; color: white; font: 700 23px/1.2 Archivo, sans-serif; }
+  .home-case-copy p { margin: 0 0 20px; color: oklch(0.82 0.01 250); font-size: 15px; line-height: 1.65; }
+  .home-case-copy a, .home-cases-all { color: oklch(0.82 0.13 70); font: 700 14px Archivo, sans-serif; }
+  .home-cases-all { display: inline-block; margin-top: 34px; }
 
   .hero-copy,
   .hero-media {
@@ -496,6 +567,10 @@ const localBusinessSchema = {
   }
 
   @media (max-width: 640px) {
+    .home-cases { padding: 76px 20px; }
+    .home-cases-heading, .home-cases-grid { grid-template-columns: 1fr; }
+    .home-cases-heading { gap: 24px; }
+    .home-case-images figure { height: min(58vw, 310px); }
     body > div > div:first-child > div > div:last-child {
       gap: 8px !important;
       justify-content: center !important;

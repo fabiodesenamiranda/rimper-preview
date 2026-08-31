@@ -1,0 +1,44 @@
+---
+import SocialLinks from './SocialLinks.astro';
+import { contact, site, whatsappUrl } from '../config/site';
+
+const currentPath = Astro.url.pathname;
+---
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-location"><span>{contact.addressLine}</span><span>{site.businessHours}</span></div>
+    <div class="topbar-contact">
+      <a href={contact.phoneHref}>{contact.phoneDisplay}</a><span>|</span>
+      <a class="topbar-whatsapp" href={whatsappUrl('barra superior')} target="_blank" rel="noopener noreferrer">WhatsApp {contact.whatsappDisplay}</a>
+      <SocialLinks compact dark />
+    </div>
+  </div>
+</div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label={`${site.name} — página inicial`}><img src="/images/logonovo.png" alt="" /><strong>{site.name}</strong></a>
+    <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <nav class="site-nav" aria-label="Navegação principal">
+      <a href="/#servicos" aria-current={currentPath.startsWith('/servicos') ? 'page' : undefined}>Serviços</a>
+      <a href="/obras" aria-current={currentPath.startsWith('/obras') ? 'page' : undefined}>Obras realizadas</a>
+      <a href="/sobre" aria-current={currentPath.startsWith('/sobre') ? 'page' : undefined}>Sobre</a>
+      <a href="/blog" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+      <a href="/#contato">Contato</a>
+      <a class="quote" href={whatsappUrl('menu principal')} target="_blank" rel="noopener noreferrer">Solicite um orçamento</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const menuButton = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.site-nav');
+  menuButton?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('is-open') ?? false;
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+    menuButton.textContent = isOpen ? '×' : '☰';
+  });
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+    menu.classList.remove('is-open');
+    menuButton?.setAttribute('aria-expanded', 'false');
+    if (menuButton) menuButton.textContent = '☰';
+  }));
+</script>

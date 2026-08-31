@@ -1,0 +1,20 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { site } from '../config/site';
+---
+<BlogLayout title="Termos de Uso" description="Condições de uso do site da RI Impermeabilização.">
+  <article class="legal"><header><p>CONDIÇÕES DO SITE</p><h1>Termos de Uso</h1><span>Última atualização: 31 de agosto de 2026</span></header><div class="content">
+    <p>Ao navegar neste site, você concorda com as condições abaixo. Se não concordar, interrompa a utilização.</p>
+    <h2>1. Finalidade</h2><p>O site apresenta a {site.name}, seus serviços, conteúdos informativos e canais de contato. As informações publicadas não substituem vistoria, diagnóstico, projeto, especificação ou proposta comercial para uma obra específica.</p>
+    <h2>2. Orçamentos e contratação</h2><p>Mensagens enviadas pelo site ou WhatsApp não constituem contratação automática. Escopo, materiais, prazos, valores, garantias e responsabilidades somente serão válidos quando formalizados entre as partes.</p>
+    <h2>3. Conteúdo técnico</h2><p>As soluções de impermeabilização dependem das condições da estrutura, do acesso, do uso e de outros fatores observados em cada caso. Não aplique orientações gerais do blog como especificação para uma obra sem avaliação adequada.</p>
+    <h2>4. Imagens e casos de obra</h2><p>As imagens ilustram serviços e etapas registradas. Resultados podem variar conforme a estrutura e o sistema contratado. É proibida a reutilização comercial das imagens e dos textos sem autorização.</p>
+    <h2>5. Links externos</h2><p>O site contém links para serviços de terceiros, como WhatsApp, redes sociais e Google Maps. A RI não controla a disponibilidade, o conteúdo ou as práticas de privacidade desses serviços.</p>
+    <h2>6. Uso adequado</h2><p>Você não deve tentar comprometer a segurança, copiar conteúdo de forma automatizada, transmitir código malicioso ou utilizar o site para atividades ilícitas.</p>
+    <h2>7. Disponibilidade e alterações</h2><p>O conteúdo e as funcionalidades podem ser corrigidos, atualizados ou interrompidos sem aviso prévio. Procuramos manter as informações corretas, mas erros técnicos ou indisponibilidades podem ocorrer.</p>
+    <h2>8. Privacidade e contato</h2><p>O tratamento de dados é descrito na <a href="/politica-de-privacidade">Política de Privacidade</a>. Dúvidas sobre estes termos podem ser enviadas para <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+  </div></article>
+</BlogLayout>
+<style>
+  .legal { max-width: 900px; margin: auto; padding: 80px 32px 110px; } header { margin-bottom: 64px; } header > p { color: oklch(0.55 0.09 250); font: 500 11px "IBM Plex Mono", monospace; letter-spacing: .13em; } h1 { margin: 12px 0 16px; color: oklch(0.25 0.04 250); font: 800 clamp(38px, 5vw, 58px)/1.05 Archivo, sans-serif; } header span { color: oklch(0.55 0.02 250); font-size: 14px; } .content { max-width: 760px; } h2 { margin: 42px 0 13px; color: oklch(0.28 0.05 250); font: 700 25px/1.25 Archivo, sans-serif; } p { color: oklch(0.4 0.015 250); font-size: 16.5px; line-height: 1.8; } @media(max-width:600px){.legal{padding:60px 20px 80px}}
+</style>

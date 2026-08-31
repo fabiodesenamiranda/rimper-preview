@@ -1,7 +1,7 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import { posts, type Post } from '../../data/posts';
-import { site } from '../../config/site';
+import { site, whatsappUrl } from '../../config/site';
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
@@ -79,7 +79,7 @@ const articleSchema = [
             <h2>Fale com um especialista</h2>
             <p>Conte onde está o problema e receba uma orientação para sua obra.</p>
           </div>
-          <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
+          <a href={whatsappUrl(`artigo: ${post.title}`)} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
         </aside>
       </div>
       <aside class="sidebar">

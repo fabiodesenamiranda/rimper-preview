@@ -1,0 +1,26 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { site } from '../config/site';
+---
+<BlogLayout title="Política de Privacidade" description="Saiba como a RI Impermeabilização trata dados pessoais e como exercer seus direitos.">
+  <article class="legal">
+    <header><p>PRIVACIDADE E PROTEÇÃO DE DADOS</p><h1>Política de Privacidade</h1><span>Última atualização: 31 de agosto de 2026</span></header>
+    <div class="content">
+      <p>Esta política explica como a {site.legalName} trata dados pessoais quando você utiliza o site <a href={site.url}>{site.url}</a> ou entra em contato pelos canais nele indicados.</p>
+      <h2>1. Quem somos</h2><p>A RI Impermeabilização presta serviços de impermeabilização e atua como controladora dos dados pessoais tratados em seus próprios canais de atendimento.</p>
+      <h2>2. Dados que podemos tratar</h2><p>Podemos receber nome, telefone, cidade, informações e imagens da obra, conteúdo da mensagem e outros dados fornecidos voluntariamente durante o atendimento. O servidor que hospeda o site também pode registrar dados técnicos, como endereço IP, data, horário, navegador, dispositivo e páginas acessadas, para segurança e funcionamento.</p>
+      <h2>3. Como utilizamos os dados</h2><p>Os dados são usados para responder solicitações, avaliar o tipo de serviço procurado, preparar propostas, organizar o atendimento, cumprir obrigações legais e contratuais, proteger o site e prevenir fraudes ou abusos.</p>
+      <h2>4. Formulário e WhatsApp</h2><p>O formulário deste site apenas organiza a mensagem e direciona você ao WhatsApp. O envio só acontece quando você confirma a mensagem no aplicativo. A partir daí, o tratamento também está sujeito aos termos e à política de privacidade do WhatsApp/Meta.</p>
+      <h2>5. Imagens e dados de localização</h2><p>Ao enviar fotografias de uma obra, verifique se elas não revelam pessoas, documentos, placas, endereços ou dados de localização que não sejam necessários. Arquivos de imagem podem conter metadados, inclusive localização EXIF.</p>
+      <h2>6. Conteúdo de terceiros e cookies</h2><p>O site utiliza fontes fornecidas pelo Google e pode carregar um mapa incorporado do Google Maps. Esses serviços podem receber dados técnicos e utilizar cookies conforme suas próprias políticas. O site não oferece contas de usuário nem área de comentários e não cria cookies de login ou de comentários.</p>
+      <h2>7. Compartilhamento</h2><p>Dados podem ser tratados por fornecedores necessários à operação, como hospedagem, e-mail, WhatsApp e serviços de mapas. Também poderão ser compartilhados quando exigido por lei, autoridade competente ou para proteção de direitos. Não comercializamos dados pessoais.</p>
+      <h2>8. Armazenamento e segurança</h2><p>Os dados são mantidos pelo tempo necessário ao atendimento, à relação contratual e ao cumprimento de obrigações legais, regulatórias ou de defesa de direitos. Adotamos medidas administrativas e técnicas compatíveis com a natureza das informações, embora nenhum sistema seja totalmente imune a incidentes.</p>
+      <h2>9. Direitos do titular</h2><p>Nos termos da LGPD, você pode solicitar confirmação e acesso, correção, informações sobre compartilhamento e, quando aplicável, anonimização, bloqueio, portabilidade, eliminação, oposição ou revogação do consentimento. Alguns pedidos podem ser limitados por obrigações legais ou pela necessidade de conservar dados para exercício de direitos.</p>
+      <h2>10. Como exercer seus direitos</h2><p>Envie sua solicitação para <a href={`mailto:${site.email}`}>{site.email}</a>. Para proteger seus dados, poderemos solicitar informações adicionais para confirmar sua identidade.</p>
+      <h2>11. Alterações desta política</h2><p>Esta política pode ser atualizada para refletir mudanças no site, no atendimento ou na legislação. A versão vigente será sempre publicada nesta página com a data de atualização.</p>
+    </div>
+  </article>
+</BlogLayout>
+<style>
+  .legal { max-width: 900px; margin: auto; padding: 80px 32px 110px; } header { margin-bottom: 64px; } header > p { color: oklch(0.55 0.09 250); font: 500 11px "IBM Plex Mono", monospace; letter-spacing: .13em; } h1 { margin: 12px 0 16px; color: oklch(0.25 0.04 250); font: 800 clamp(38px, 5vw, 58px)/1.05 Archivo, sans-serif; } header span { color: oklch(0.55 0.02 250); font-size: 14px; } .content { max-width: 760px; } h2 { margin: 42px 0 13px; color: oklch(0.28 0.05 250); font: 700 25px/1.25 Archivo, sans-serif; } p { color: oklch(0.4 0.015 250); font-size: 16.5px; line-height: 1.8; } @media(max-width:600px){.legal{padding:60px 20px 80px}}
+</style>

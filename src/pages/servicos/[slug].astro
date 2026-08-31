@@ -1,7 +1,7 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import { services, type Service } from '../../data/servicos';
-import { site } from '../../config/site';
+import { site, whatsappUrl } from '../../config/site';
 
 export function getStaticPaths() {
   return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
@@ -69,7 +69,7 @@ const schema = [
         <h1>{service.title}</h1>
         <p class="hero-description">{service.description}</p>
         <div class="hero-actions">
-          <a class="primary-action" href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Solicite uma avaliação</a>
+          <a class="primary-action" href={whatsappUrl(`serviço: ${service.title}`)} target="_blank" rel="noopener noreferrer">Solicite uma avaliação</a>
           <a class="secondary-action" href="#como-funciona">Como executamos <span aria-hidden="true">↓</span></a>
         </div>
       </div>
@@ -89,7 +89,7 @@ const schema = [
         <span>ATENDIMENTO TÉCNICO</span>
         <strong>Itu, São Paulo e região</strong>
         <p>Conte o que está acontecendo e envie fotos para uma orientação inicial.</p>
-        <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp →</a>
+        <a href={whatsappUrl(`serviço: ${service.title}`)} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp →</a>
       </aside>
     </section>
 
@@ -174,7 +174,7 @@ const schema = [
         <h2>Vamos avaliar sua obra?</h2>
         <p>Envie uma mensagem com informações sobre o local e receba orientação da nossa equipe.</p>
       </div>
-      <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Solicite um orçamento <span aria-hidden="true">→</span></a>
+      <a href={whatsappUrl(`serviço: ${service.title}`)} target="_blank" rel="noopener noreferrer">Solicite um orçamento <span aria-hidden="true">→</span></a>
     </section>
 
     <section class="more-services">

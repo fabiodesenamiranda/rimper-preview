@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { workCases, type WorkCase } from '../../data/cases';
+import { site, whatsappUrl } from '../../config/site';
+
+export function getStaticPaths() {
+  return workCases.map((workCase) => ({ params: { slug: workCase.slug }, props: { workCase } }));
+}
+
+interface Props { workCase: WorkCase }
+const { workCase } = Astro.props;
+const pageUrl = `${site.url}/obras/${workCase.slug}/`;
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'Article', headline: workCase.title, description: workCase.summary, image: new URL(workCase.cover.src, site.url).href, url: pageUrl, author: { '@id': `${site.url}/#business` } },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: `${site.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Obras', item: `${site.url}/obras/` },
+    { '@type': 'ListItem', position: 3, name: workCase.title, item: pageUrl },
+  ] },
+];
+---
+<BlogLayout title={workCase.title} description={workCase.summary} image={workCase.cover.src} imageAlt={workCase.images.at(-1)?.alt} type="article" schema={schema}>
+  <article>
+    <header class="case-hero"><div><a href="/obras">← Voltar às obras</a><p>{workCase.category} · {workCase.location}</p><h1>{workCase.title}</h1><span>{workCase.summary}</span></div></header>
+    <section class="story">
+      <div><small>O DESAFIO</small><h2>Problema</h2><p>{workCase.problem}</p></div>
+      <div><small>A EXECUÇÃO</small><h2>Solução</h2><p>{workCase.solution}</p></div>
+      <div><small>A ENTREGA</small><h2>Resultado</h2><p>{workCase.result}</p></div>
+    </section>
+    <section class="sequence"><div class="heading"><small>REGISTRO DA OBRA</small><h2>Etapas documentadas</h2><p>As imagens abaixo pertencem à mesma sequência de execução.</p></div><div class="images">
+      {workCase.images.map((item, index) => <figure><div><Image src={item.image} alt={item.alt} widths={[520, 800, 1200]} sizes="(max-width: 720px) 100vw, 33vw" loading={index === 0 ? 'eager' : 'lazy'} /><span>{item.label}</span></div><figcaption>{item.alt}</figcaption></figure>)}
+    </div></section>
+    <section class="steps"><div><small>PROCESSO</small><h2>Como o serviço foi conduzido</h2></div><ol>{workCase.steps.map((step) => <li><h3>{step.title}</h3><p>{step.text}</p></li>)}</ol></section>
+    <section class="case-cta"><div><small>PRECISA DE UMA SOLUÇÃO?</small><h2>Conte sobre a sua obra</h2><p>Envie fotos e informações para uma primeira orientação da equipe.</p></div><a href={whatsappUrl(`caso: ${workCase.title}`)} target="_blank" rel="noopener noreferrer">Solicitar avaliação →</a></section>
+  </article>
+</BlogLayout>
+<style>
+  .case-hero { padding: 84px 32px 90px; background: oklch(0.24 0.04 250); color: white; } .case-hero > div, .story, .sequence, .steps, .case-cta { max-width: 1240px; margin: auto; }
+  .case-hero a { display: inline-block; margin-bottom: 48px; color: oklch(0.82 0.04 250); font-weight: 600; } .case-hero p, small { color: oklch(0.7 0.12 70); font: 500 11px "IBM Plex Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+  h1 { max-width: 900px; margin: 18px 0 22px; font: 800 clamp(40px, 5vw, 68px)/1.04 Archivo, sans-serif; letter-spacing: -.03em; } .case-hero span { display: block; max-width: 740px; color: oklch(0.88 0.01 250); font-size: 19px; line-height: 1.65; }
+  .story { padding: 82px 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; } .story > div { padding: 32px; background: white; border: 1px solid oklch(0.9 0.01 250); } h2 { margin: 12px 0 15px; color: oklch(0.27 0.04 250); font: 700 clamp(28px, 3vw, 40px)/1.12 Archivo, sans-serif; } .story p, .heading p, .steps p, .case-cta p { color: oklch(0.45 0.015 250); line-height: 1.7; }
+  .sequence { padding: 0 32px 92px; } .heading { margin-bottom: 36px; } .heading p { margin: 0; } .images { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; } figure { margin: 0; } figure > div { position: relative; height: 440px; overflow: hidden; background: oklch(0.9 0.01 250); } figure img { width: 100%; height: 100%; object-fit: cover; } figure span { position: absolute; top: 14px; left: 14px; padding: 7px 9px; background: oklch(0.23 0.04 250 / .9); color: white; font: 600 10px "IBM Plex Mono", monospace; letter-spacing: .1em; } figcaption { margin-top: 10px; color: oklch(0.52 0.02 250); font-size: 13px; }
+  .steps { padding: 88px 32px; background: oklch(0.95 0.008 250); } .steps ol { list-style: none; margin: 38px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: step; } .steps li { padding: 25px; background: white; counter-increment: step; } .steps li::before { content: "0" counter(step); color: oklch(0.62 0.1 250); font: 600 11px "IBM Plex Mono", monospace; } .steps h3 { color: oklch(0.3 0.05 250); font: 700 19px Archivo, sans-serif; }
+  .case-cta { margin-top: 88px; margin-bottom: 96px; padding: 42px; display: flex; align-items: center; justify-content: space-between; gap: 32px; background: oklch(0.92 0.08 75); border-radius: 6px; } .case-cta h2 { margin-bottom: 8px; } .case-cta p { margin: 0; } .case-cta a { padding: 16px 22px; flex: 0 0 auto; border-radius: 4px; background: oklch(0.3 0.07 250); color: white; font-weight: 700; }
+  @media(max-width:800px){.story,.images{grid-template-columns:1fr}.steps ol{grid-template-columns:1fr 1fr}figure>div{height:min(110vw,540px)}.case-cta{margin-inline:20px;align-items:flex-start;flex-direction:column}}
+  @media(max-width:520px){.case-hero{padding:64px 20px}.story,.sequence,.steps{padding-inline:20px}.steps ol{grid-template-columns:1fr}}
+</style>

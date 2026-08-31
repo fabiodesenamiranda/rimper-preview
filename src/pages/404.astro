@@ -1,5 +1,6 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
+import { whatsappUrl } from '../config/site';
 ---
 
 <BlogLayout
@@ -21,7 +22,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
         <a class="secondary-action" href="/#servicos">Ver nossos serviços</a>
       </div>
       <p class="help">
-        Precisa de ajuda? <a href="https://wa.me/5511917351151" target="_blank" rel="noopener noreferrer">Fale conosco pelo WhatsApp</a>.
+        Precisa de ajuda? <a href={whatsappUrl('página não encontrada')} target="_blank" rel="noopener noreferrer">Fale conosco pelo WhatsApp</a>.
       </p>
     </div>
   </section>
