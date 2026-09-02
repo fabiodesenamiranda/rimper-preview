@@ -20,8 +20,8 @@ const casesSection = `
           const last = workCase.images.at(-1)!;
           return `<article class="home-case-card">
             <div class="home-case-images">
-              <figure><img src="${first.image.src}" alt="${first.alt}" loading="lazy" /><span>ANTES DA APLICAÇÃO</span></figure>
-              <figure><img src="${last.image.src}" alt="${last.alt}" loading="lazy" /><span>SISTEMA APLICADO</span></figure>
+              <figure><img src="${first.image.src}" alt="${first.alt}" loading="lazy" /><span>ANTES</span></figure>
+              <figure><img src="${last.image.src}" alt="${last.alt}" loading="lazy" /><span>DEPOIS</span></figure>
             </div>
             <div class="home-case-copy"><small>${workCase.category} · ${workCase.location}</small><h3>${workCase.title}</h3><p>${workCase.summary}</p><a href="/obras/${workCase.slug}">Ver caso completo →</a></div>
           </article>`;

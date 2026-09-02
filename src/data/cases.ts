@@ -1,10 +1,8 @@
 import type { ImageMetadata } from 'astro';
-import lajeAntes from '../assets/obras/nova-laje-preparacao-01.jpg';
-import lajeEtapa from '../assets/obras/nova-laje-manta-02.jpg';
-import lajeDepois from '../assets/obras/nova-laje-manta-03.jpg';
-import piscinaAntes from '../assets/obras/nova-piscina-04.jpg';
-import piscinaEtapa from '../assets/obras/nova-piscina-05.jpg';
-import piscinaDepois from '../assets/obras/nova-piscina-03.jpg';
+import lajeAntes from '../assets/obras/manta-asfaltica-antes.jpeg';
+import lajeDepois from '../assets/obras/manta-asfaltica-depois.jpeg';
+import piscinaAntes from '../assets/obras/piscina-antes-cliente.jpeg';
+import piscinaDepois from '../assets/obras/piscina-depois-cliente.jpeg';
 
 export type WorkCase = {
   slug: string;
@@ -22,55 +20,53 @@ export type WorkCase = {
 
 export const workCases: WorkCase[] = [
   {
-    slug: 'recuperacao-e-impermeabilizacao-de-cobertura',
-    title: 'Recuperação e impermeabilização de cobertura',
+    slug: 'impermeabilizacao-em-laje-com-manta-asfaltica',
+    title: 'Impermeabilização em Laje com Manta Asfáltica',
     category: 'Lajes e coberturas',
     location: 'Itu e região, SP',
     summary:
-      'Registro da preparação da base e da aplicação do sistema asfáltico em uma cobertura exposta.',
+      'Antes e depois da preparação da laje e da aplicação da manta asfáltica em toda a cobertura.',
     problem:
-      'A cobertura precisava receber uma nova barreira impermeável, com atenção aos encontros, rodapés e elementos elevados.',
+      'A laje exposta precisava de uma barreira impermeável contínua para proteger a estrutura contra infiltrações e a ação do tempo.',
     solution:
-      'A equipe preparou e regularizou a superfície antes de executar a manta asfáltica de forma contínua nos planos e detalhes.',
+      'A equipe preparou a base e aplicou a manta asfáltica em toda a área, tratando emendas, ralos, rodapés e encontros com as paredes.',
     result:
-      'Sistema impermeabilizante aplicado e arremates executados, deixando a cobertura pronta para as etapas de proteção e acabamento previstas para a obra.',
+      'A laje recebeu uma camada impermeável contínua, com sobreposições e arremates executados para garantir a proteção da cobertura.',
     cover: lajeDepois,
     images: [
-      { image: lajeAntes, label: 'PREPARAÇÃO', alt: 'Cobertura durante a preparação da superfície' },
-      { image: lajeEtapa, label: 'EXECUÇÃO', alt: 'Aplicação do sistema impermeabilizante na cobertura' },
-      { image: lajeDepois, label: 'SISTEMA APLICADO', alt: 'Cobertura com manta asfáltica aplicada' },
+      { image: lajeAntes, label: 'ANTES', alt: 'Laje preparada antes da aplicação da manta asfáltica' },
+      { image: lajeDepois, label: 'DEPOIS', alt: 'Laje impermeabilizada com manta asfáltica aplicada' },
     ],
     steps: [
-      { title: 'Inspeção e preparação', text: 'Verificação da base, limpeza e tratamento dos pontos que poderiam comprometer a aderência.' },
-      { title: 'Detalhamento', text: 'Execução cuidadosa nos rodapés, encontros e elementos elevados da cobertura.' },
-      { title: 'Aplicação do sistema', text: 'Instalação contínua da manta, com tratamento das sobreposições e emendas.' },
-      { title: 'Conferência final', text: 'Revisão visual dos arremates antes da liberação para a etapa seguinte da obra.' },
+      { title: 'Preparação da laje', text: 'Limpeza e regularização da base para proporcionar a aderência correta do sistema.' },
+      { title: 'Tratamento dos detalhes', text: 'Reforço nos ralos, rodapés, cantos e encontros com elementos da cobertura.' },
+      { title: 'Aplicação da manta', text: 'Instalação da manta asfáltica com sobreposição e aderência contínuas em toda a laje.' },
+      { title: 'Conferência dos arremates', text: 'Inspeção das emendas e dos pontos críticos antes da liberação da área.' },
     ],
   },
   {
-    slug: 'impermeabilizacao-de-piscina-residencial',
-    title: 'Impermeabilização de piscina residencial',
+    slug: 'impermeabilizacao-em-piscina',
+    title: 'Impermeabilização em Piscina',
     category: 'Piscinas',
     location: 'Itu e região, SP',
     summary:
-      'Sequência real de execução em uma piscina com diferentes níveis, degraus e pontos hidráulicos.',
+      'Antes e depois da impermeabilização de uma piscina com degraus, diferentes níveis e pontos hidráulicos.',
     problem:
-      'A geometria da piscina e as diversas passagens hidráulicas exigiam continuidade do sistema e atenção especial aos pontos críticos.',
+      'A estrutura apresentava a base exposta e precisava de tratamento completo para evitar perdas de água e infiltrações futuras.',
     solution:
-      'Foram preparados fundo, paredes, degraus e passagens antes da aplicação uniforme do sistema impermeabilizante.',
+      'Fundo, paredes, degraus, cantos e passagens hidráulicas foram preparados e receberam o sistema impermeabilizante de forma contínua.',
     result:
-      'Barreira impermeável executada em toda a estrutura registrada, pronta para as verificações técnicas e o revestimento compatível.',
+      'A piscina ficou integralmente protegida e pronta para o teste de estanqueidade e as próximas etapas de acabamento.',
     cover: piscinaDepois,
     images: [
-      { image: piscinaAntes, label: 'PREPARAÇÃO', alt: 'Estrutura da piscina durante a preparação' },
-      { image: piscinaEtapa, label: 'DETALHES', alt: 'Tratamento dos pontos hidráulicos da piscina' },
-      { image: piscinaDepois, label: 'SISTEMA APLICADO', alt: 'Piscina residencial com sistema impermeabilizante aplicado' },
+      { image: piscinaAntes, label: 'ANTES', alt: 'Piscina antes da aplicação do sistema impermeabilizante' },
+      { image: piscinaDepois, label: 'DEPOIS', alt: 'Piscina com sistema impermeabilizante aplicado em toda a estrutura' },
     ],
     steps: [
-      { title: 'Avaliação da estrutura', text: 'Mapeamento de paredes, fundo, degraus, encontros e dispositivos hidráulicos.' },
-      { title: 'Preparação da base', text: 'Correção e regularização das superfícies para receber o sistema especificado.' },
-      { title: 'Tratamento dos detalhes', text: 'Reforço dos pontos hidráulicos e mudanças de plano antes da aplicação geral.' },
-      { title: 'Aplicação contínua', text: 'Execução uniforme do sistema em toda a geometria da piscina.' },
+      { title: 'Avaliação da estrutura', text: 'Inspeção do fundo, paredes, degraus, encontros e dispositivos hidráulicos.' },
+      { title: 'Preparação da base', text: 'Limpeza, correção e regularização das superfícies antes da impermeabilização.' },
+      { title: 'Tratamento dos pontos críticos', text: 'Reforço das passagens hidráulicas, cantos e mudanças de plano.' },
+      { title: 'Aplicação do sistema', text: 'Execução uniforme da barreira impermeável em toda a geometria da piscina.' },
     ],
   },
 ];
