@@ -1,6 +1,7 @@
 ---
 import source from '../../Home RI Impermeabilizacao.dc.html?raw';
 import Seo from '../components/Seo.astro';
+import LgpdConsent from '../components/LgpdConsent.astro';
 import { contact, site, whatsappUrl } from '../config/site';
 import { workCases } from '../data/cases';
 
@@ -77,9 +78,11 @@ const localBusinessSchema = {
   ],
   sameAs: site.social,
 };
+const GA_ID = import.meta.env.PUBLIC_GA_ID;
+const FB_PIXEL_ID = import.meta.env.PUBLIC_FB_PIXEL_ID;
 ---
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-ga-id={GA_ID} data-fb-pixel-id={FB_PIXEL_ID}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -94,6 +97,7 @@ const localBusinessSchema = {
   </head>
   <body>
     <Fragment set:html={page} />
+    <LgpdConsent />
 
     <script>
       const menuButton = document.querySelector('.menu-toggle');

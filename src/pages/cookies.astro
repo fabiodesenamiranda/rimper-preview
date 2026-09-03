@@ -1,0 +1,39 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { site } from '../config/site';
+---
+<BlogLayout title="Política de Cookies" description="Entenda como a RI Impermeabilização utiliza cookies e gerencie suas preferências.">
+  <article class="legal">
+    <header><p>PRIVACIDADE E TRANSPARÊNCIA</p><h1>Política de Cookies</h1><span>Última atualização: 3 de setembro de 2026</span></header>
+    <div class="content">
+      <p>Esta política explica como a {site.legalName} utiliza cookies e tecnologias semelhantes no site <a href={site.url}>{site.url}</a>.</p>
+      <h2>1. O que são cookies</h2><p>Cookies são pequenos arquivos armazenados pelo navegador. Eles podem manter preferências, permitir recursos essenciais e, quando você autoriza, ajudar a medir o uso do site e o resultado de campanhas.</p>
+      <h2>2. Categorias utilizadas</h2>
+      <h3>Necessários</h3><p>Permitem funções essenciais e registram sua escolha de privacidade. Permanecem ativos porque são necessários para o funcionamento do mecanismo de consentimento.</p>
+      <h3>Análise</h3><p>Com sua autorização, podem ser usados para gerar estatísticas de acesso e entender como as páginas são utilizadas, por exemplo, por meio do Google Analytics.</p>
+      <h3>Marketing</h3><p>Com sua autorização, podem ser usados para medir campanhas e a interação com anúncios, por exemplo, por meio do Meta Pixel.</p>
+      <h2>3. Sua escolha</h2><p>Na primeira visita, você pode aceitar tudo, rejeitar cookies opcionais ou escolher categorias. A recusa não impede o uso das funções essenciais do site.</p>
+      <button class="manage-cookies" type="button" data-lgpd-open>Gerenciar preferências de cookies</button>
+      <h2>4. Armazenamento da preferência</h2><p>Sua decisão é registrada no navegador, no armazenamento local e em um cookie necessário, por até 12 meses. O registro contém as categorias escolhidas, a data e a versão do consentimento.</p>
+      <h2>5. Como alterar ou apagar</h2><p>Você pode reabrir as preferências pelo botão acima ou pelo link no rodapé. Também pode apagar cookies e dados locais nas configurações do navegador. Nesse caso, o banner será exibido novamente.</p>
+      <h2>6. Serviços de terceiros</h2><p>Quando uma categoria opcional é autorizada, os fornecedores correspondentes podem tratar dados de acordo com suas próprias políticas. Links externos e o uso voluntário de serviços como WhatsApp e Google Maps também estão sujeitos às regras desses fornecedores.</p>
+      <h2>7. Contato</h2><p>Em caso de dúvida sobre cookies ou dados pessoais, escreva para <a href={`mailto:${site.email}`}>{site.email}</a>. Consulte também nossa <a href="/politica-de-privacidade">Política de Privacidade</a>.</p>
+    </div>
+  </article>
+</BlogLayout>
+
+<style>
+  .legal { max-width: 900px; margin: auto; padding: 80px 32px 110px; }
+  header { margin-bottom: 64px; }
+  header > p { color: oklch(0.55 0.09 250); font: 500 11px "IBM Plex Mono", monospace; letter-spacing: .13em; }
+  h1 { margin: 12px 0 16px; color: oklch(0.25 0.04 250); font: 800 clamp(38px, 5vw, 58px)/1.05 Archivo, sans-serif; }
+  header span { color: oklch(0.55 0.02 250); font-size: 14px; }
+  .content { max-width: 760px; }
+  h2 { margin: 42px 0 13px; color: oklch(0.28 0.05 250); font: 700 25px/1.25 Archivo, sans-serif; }
+  h3 { margin: 24px 0 8px; color: oklch(0.33 0.045 250); font: 600 18px/1.3 Archivo, sans-serif; }
+  p { color: oklch(0.4 0.015 250); font-size: 16.5px; line-height: 1.8; }
+  .manage-cookies { margin-top: 8px; padding: 13px 18px; border: 1px solid oklch(0.42 0.11 250); border-radius: 4px; color: #fff; background: oklch(0.42 0.11 250); font: 600 14px "Libre Franklin", sans-serif; cursor: pointer; }
+  .manage-cookies:hover { background: oklch(0.35 0.1 250); }
+  .manage-cookies:focus-visible { outline: 3px solid oklch(0.62 0.12 250 / .35); outline-offset: 3px; }
+  @media(max-width:600px){.legal{padding:60px 20px 80px}}
+</style>

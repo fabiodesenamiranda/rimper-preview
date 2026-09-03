@@ -1,0 +1,373 @@
+---
+const POLICY_URL = '/politica-de-privacidade';
+const COOKIES_URL = '/cookies';
+---
+
+<div class="lgpd-backdrop" id="lgpd-backdrop" aria-hidden="true" hidden></div>
+
+<section
+  class="lgpd-banner"
+  id="lgpd-banner"
+  role="dialog"
+  aria-live="polite"
+  aria-label="Consentimento de cookies"
+  hidden
+>
+  <div class="lgpd-banner__mark" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.8 2.9 8.2 7 10 4.1-1.8 7-5.2 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg>
+  </div>
+  <div class="lgpd-banner__content">
+    <strong>Sua privacidade importa</strong>
+    <p>
+      Usamos cookies necessários para o site funcionar. Com sua permissão, também usamos cookies de
+      análise e marketing para melhorar sua experiência e medir campanhas. Consulte nossa
+      <a href={POLICY_URL}>Política de Privacidade</a> e a <a href={COOKIES_URL}>Política de Cookies</a>.
+    </p>
+  </div>
+  <div class="lgpd-actions">
+    <button class="lgpd-button lgpd-button--quiet" type="button" id="lgpd-reject">Rejeitar</button>
+    <button class="lgpd-button lgpd-button--outline" type="button" id="lgpd-customize">Personalizar</button>
+    <button class="lgpd-button lgpd-button--primary" type="button" id="lgpd-accept">Aceitar tudo</button>
+  </div>
+</section>
+
+<section
+  class="lgpd-modal"
+  id="lgpd-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="lgpd-modal-title"
+  aria-describedby="lgpd-modal-description"
+  tabindex="-1"
+  hidden
+>
+  <header class="lgpd-modal__header">
+    <div>
+      <span>CONTROLE DE PRIVACIDADE</span>
+      <h2 id="lgpd-modal-title">Preferências de cookies</h2>
+    </div>
+    <button class="lgpd-close" type="button" id="lgpd-close" aria-label="Fechar preferências">×</button>
+  </header>
+  <p id="lgpd-modal-description" class="lgpd-modal__description">
+    Escolha quais categorias você permite. Você pode mudar sua decisão a qualquer momento.
+  </p>
+
+  <div class="lgpd-categories">
+    <label class="lgpd-category lgpd-category--locked">
+      <span class="lgpd-category__copy">
+        <strong>Necessários</strong>
+        <small>Essenciais para o funcionamento e a segurança do site. Sempre ativos.</small>
+      </span>
+      <span class="lgpd-switch">
+        <input type="checkbox" checked disabled aria-label="Cookies necessários, sempre ativos" />
+        <span aria-hidden="true"></span>
+      </span>
+    </label>
+    <label class="lgpd-category">
+      <span class="lgpd-category__copy">
+        <strong>Análise</strong>
+        <small>Ajudam a entender como o site é usado, por exemplo, pelo Google Analytics.</small>
+      </span>
+      <span class="lgpd-switch">
+        <input type="checkbox" id="lgpd-analytics" aria-label="Permitir cookies de análise" />
+        <span aria-hidden="true"></span>
+      </span>
+    </label>
+    <label class="lgpd-category">
+      <span class="lgpd-category__copy">
+        <strong>Marketing</strong>
+        <small>Ajudam a medir campanhas e anúncios, por exemplo, pelo Meta Pixel.</small>
+      </span>
+      <span class="lgpd-switch">
+        <input type="checkbox" id="lgpd-marketing" aria-label="Permitir cookies de marketing" />
+        <span aria-hidden="true"></span>
+      </span>
+    </label>
+  </div>
+
+  <footer class="lgpd-modal__footer">
+    <button class="lgpd-button lgpd-button--quiet" type="button" id="lgpd-cancel">Cancelar</button>
+    <button class="lgpd-button lgpd-button--primary" type="button" id="lgpd-save">Salvar preferências</button>
+  </footer>
+</section>
+
+<style>
+  .lgpd-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: oklch(0.14 0.025 250 / .62);
+    backdrop-filter: blur(3px);
+  }
+
+  .lgpd-banner,
+  .lgpd-modal {
+    color: oklch(0.28 0.025 250);
+    background: oklch(0.995 0.002 250);
+    border: 1px solid oklch(0.85 0.018 250);
+    border-radius: 6px;
+    box-shadow: 0 18px 54px oklch(0.18 0.035 250 / .24);
+    font-family: "Libre Franklin", system-ui, sans-serif;
+  }
+
+  .lgpd-banner {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    display: grid;
+    grid-template-columns: auto minmax(260px, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    width: min(1160px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 20px 22px;
+    animation: lgpd-enter 240ms ease-out;
+  }
+
+  .lgpd-banner[hidden],
+  .lgpd-modal[hidden],
+  .lgpd-backdrop[hidden] { display: none; }
+
+  .lgpd-banner__mark {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    color: oklch(0.42 0.11 250);
+    background: oklch(0.94 0.025 250);
+    border-radius: 4px;
+  }
+
+  .lgpd-banner__mark svg { width: 25px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .lgpd-banner__content strong { display: block; margin-bottom: 5px; color: oklch(0.25 0.04 250); font: 700 17px Archivo, sans-serif; }
+  .lgpd-banner__content p { max-width: 700px; margin: 0; color: oklch(0.42 0.015 250); font-size: 13.5px; line-height: 1.55; }
+  .lgpd-banner a, .lgpd-modal a { color: oklch(0.42 0.11 250); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .lgpd-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
+
+  .lgpd-button {
+    min-height: 42px;
+    padding: 10px 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font: 600 13.5px "Libre Franklin", system-ui, sans-serif;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .lgpd-button--primary { border-color: oklch(0.42 0.11 250); color: #fff; background: oklch(0.42 0.11 250); }
+  .lgpd-button--primary:hover { border-color: oklch(0.35 0.1 250); background: oklch(0.35 0.1 250); }
+  .lgpd-button--outline { border-color: oklch(0.65 0.07 250); color: oklch(0.36 0.09 250); background: transparent; }
+  .lgpd-button--outline:hover { background: oklch(0.96 0.015 250); }
+  .lgpd-button--quiet { color: oklch(0.42 0.02 250); background: oklch(0.95 0.008 250); }
+  .lgpd-button--quiet:hover { background: oklch(0.91 0.012 250); }
+  .lgpd-button:focus-visible, .lgpd-close:focus-visible, .lgpd-switch input:focus-visible + span { outline: 3px solid oklch(0.62 0.12 250 / .35); outline-offset: 2px; }
+
+  .lgpd-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+    width: min(620px, calc(100% - 32px));
+    max-height: calc(100vh - 32px);
+    padding: 26px;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    animation: lgpd-modal-enter 180ms ease-out;
+  }
+
+  .lgpd-modal__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+  .lgpd-modal__header span { color: oklch(0.54 0.09 250); font: 500 10px "IBM Plex Mono", monospace; letter-spacing: .13em; }
+  .lgpd-modal__header h2 { margin: 8px 0 0; color: oklch(0.25 0.04 250); font: 700 26px/1.2 Archivo, sans-serif; }
+  .lgpd-close { width: 38px; height: 38px; flex: 0 0 auto; border: 1px solid oklch(0.87 0.012 250); border-radius: 4px; color: oklch(0.4 0.025 250); background: #fff; font: 400 25px/1 sans-serif; cursor: pointer; }
+  .lgpd-modal__description { margin: 12px 0 20px; color: oklch(0.44 0.015 250); font-size: 14px; line-height: 1.55; }
+  .lgpd-categories { display: grid; gap: 10px; }
+  .lgpd-category { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px; border: 1px solid oklch(0.89 0.012 250); border-radius: 5px; background: oklch(0.985 0.004 250); cursor: pointer; }
+  .lgpd-category--locked { cursor: default; }
+  .lgpd-category__copy strong { display: block; margin-bottom: 5px; color: oklch(0.29 0.035 250); font: 600 15px Archivo, sans-serif; }
+  .lgpd-category__copy small { display: block; color: oklch(0.48 0.015 250); font-size: 12.5px; line-height: 1.45; }
+  .lgpd-switch { position: relative; width: 42px; height: 24px; flex: 0 0 42px; }
+  .lgpd-switch input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .lgpd-switch span { position: absolute; inset: 0; border-radius: 20px; background: oklch(0.77 0.012 250); transition: background 160ms ease; }
+  .lgpd-switch span::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px oklch(0.2 0.02 250 / .25); transition: transform 160ms ease; }
+  .lgpd-switch input:checked + span { background: oklch(0.42 0.11 250); }
+  .lgpd-switch input:checked + span::after { transform: translateX(18px); }
+  .lgpd-switch input:disabled + span { opacity: .7; }
+  .lgpd-modal__footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; padding: 20px 0 0; border-top: 1px solid oklch(0.89 0.012 250); background: transparent; }
+
+  @keyframes lgpd-enter { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes lgpd-modal-enter { from { opacity: 0; transform: translate(-50%, calc(-50% + 10px)); } }
+
+  @media (max-width: 860px) {
+    .lgpd-banner { grid-template-columns: auto 1fr; }
+    .lgpd-actions { grid-column: 1 / -1; justify-content: flex-end; }
+  }
+
+  @media (max-width: 600px) {
+    .lgpd-banner { right: 10px; bottom: 10px; left: 10px; width: calc(100% - 20px); grid-template-columns: 1fr; gap: 12px; padding: 18px; }
+    .lgpd-banner__mark { display: none; }
+    .lgpd-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .lgpd-actions .lgpd-button--primary { grid-column: 1 / -1; grid-row: 1; }
+    .lgpd-modal { padding: 20px; }
+    .lgpd-modal__header h2 { font-size: 22px; }
+    .lgpd-category { gap: 14px; padding: 14px; }
+    .lgpd-modal__footer .lgpd-button { flex: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lgpd-banner, .lgpd-modal { animation: none; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = 'predlead_lgpd_consent_v1';
+    const VERSION = 1;
+    const banner = document.getElementById('lgpd-banner');
+    const modal = document.getElementById('lgpd-modal');
+    const backdrop = document.getElementById('lgpd-backdrop');
+    const analytics = document.getElementById('lgpd-analytics');
+    const marketing = document.getElementById('lgpd-marketing');
+    let returnFocus = null;
+
+    const readConsent = () => {
+      let raw = null;
+      try { raw = localStorage.getItem(STORAGE_KEY); } catch {}
+      if (!raw) {
+        const cookie = document.cookie.split('; ').find((item) => item.startsWith(`${STORAGE_KEY}=`));
+        if (cookie) {
+          try { raw = decodeURIComponent(cookie.slice(STORAGE_KEY.length + 1)); } catch {}
+        }
+      }
+      if (!raw) return null;
+      try {
+        const value = JSON.parse(raw);
+        return value && value.v === VERSION && value.necessary === true ? value : null;
+      } catch { return null; }
+    };
+
+    const writeConsent = (preferences) => {
+      const value = {
+        necessary: true,
+        analytics: Boolean(preferences.analytics),
+        marketing: Boolean(preferences.marketing),
+        ts: new Date().toISOString(),
+        v: VERSION,
+      };
+      const raw = JSON.stringify(value);
+      try { localStorage.setItem(STORAGE_KEY, raw); } catch {}
+      document.cookie = `${STORAGE_KEY}=${encodeURIComponent(raw)}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
+      return value;
+    };
+
+    const enableAnalytics = () => {
+      const gaId = document.documentElement.dataset.gaId;
+      if (!gaId || window.__ga_loaded) return;
+      window[`ga-disable-${gaId}`] = false;
+      window.__ga_loaded = true;
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+      document.head.appendChild(script);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', gaId, { anonymize_ip: true });
+    };
+
+    const disableAnalytics = () => {
+      const gaId = document.documentElement.dataset.gaId;
+      if (!gaId) return;
+      window[`ga-disable-${gaId}`] = true;
+      if (window.gtag) window.gtag('consent', 'update', { analytics_storage: 'denied' });
+    };
+
+    const enableMarketing = () => {
+      const pixelId = document.documentElement.dataset.fbPixelId;
+      if (!pixelId || window.__fb_loaded) return;
+      window.__fb_loaded = true;
+      const fbq = window.fbq = function () {
+        fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
+      };
+      if (!window._fbq) window._fbq = fbq;
+      fbq.push = fbq;
+      fbq.loaded = true;
+      fbq.version = '2.0';
+      fbq.queue = [];
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://connect.facebook.net/pt_BR/fbevents.js';
+      document.head.appendChild(script);
+      window.fbq('init', pixelId);
+      window.fbq('track', 'PageView');
+    };
+
+    const disableMarketing = () => {
+      if (window.fbq) window.fbq('consent', 'revoke');
+    };
+
+    const applyConsent = (consent) => {
+      if (consent?.analytics) enableAnalytics(); else disableAnalytics();
+      if (consent?.marketing) enableMarketing(); else disableMarketing();
+      window.dispatchEvent(new CustomEvent('lgpd:consent', { detail: consent }));
+    };
+
+    const showBanner = () => { if (banner) banner.hidden = false; };
+    const hideBanner = () => { if (banner) banner.hidden = true; };
+    const closeModal = () => {
+      if (modal) modal.hidden = true;
+      if (backdrop) backdrop.hidden = true;
+      document.body.style.removeProperty('overflow');
+      if (returnFocus instanceof HTMLElement) returnFocus.focus();
+    };
+    const openModal = (current = readConsent(), trigger = document.activeElement) => {
+      returnFocus = trigger;
+      if (analytics instanceof HTMLInputElement) analytics.checked = Boolean(current?.analytics);
+      if (marketing instanceof HTMLInputElement) marketing.checked = Boolean(current?.marketing);
+      if (backdrop) backdrop.hidden = false;
+      if (modal) {
+        modal.hidden = false;
+        modal.focus();
+      }
+      document.body.style.overflow = 'hidden';
+    };
+
+    document.getElementById('lgpd-accept')?.addEventListener('click', () => {
+      const saved = writeConsent({ analytics: true, marketing: true });
+      hideBanner(); closeModal(); applyConsent(saved);
+    });
+    document.getElementById('lgpd-reject')?.addEventListener('click', () => {
+      const saved = writeConsent({ analytics: false, marketing: false });
+      hideBanner(); closeModal(); applyConsent(saved);
+    });
+    document.getElementById('lgpd-customize')?.addEventListener('click', (event) => openModal(readConsent(), event.currentTarget));
+    document.getElementById('lgpd-cancel')?.addEventListener('click', closeModal);
+    document.getElementById('lgpd-close')?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+    document.getElementById('lgpd-save')?.addEventListener('click', () => {
+      const saved = writeConsent({
+        analytics: analytics instanceof HTMLInputElement && analytics.checked,
+        marketing: marketing instanceof HTMLInputElement && marketing.checked,
+      });
+      hideBanner(); closeModal(); applyConsent(saved);
+    });
+    document.querySelectorAll('[data-lgpd-open]').forEach((button) => {
+      button.addEventListener('click', (event) => { event.preventDefault(); openModal(readConsent(), event.currentTarget); });
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal && !modal.hidden) closeModal();
+      if (event.key !== 'Tab' || !modal || modal.hidden) return;
+      const focusable = [...modal.querySelectorAll('button, input:not([disabled]), a[href]')].filter((element) => element instanceof HTMLElement && !element.hidden);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+
+    window.__lgpd = { open: () => openModal(readConsent()), get: readConsent };
+    const existing = readConsent();
+    if (existing) applyConsent(existing); else showBanner();
+  })();
+</script>

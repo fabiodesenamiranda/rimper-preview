@@ -2,6 +2,7 @@
 import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import LgpdConsent from '../components/LgpdConsent.astro';
 
 interface Props {
   title: string;
@@ -14,9 +15,11 @@ interface Props {
 }
 
 const { title, description, image, imageAlt, type = 'website', noindex = false, schema } = Astro.props;
+const GA_ID = import.meta.env.PUBLIC_GA_ID;
+const FB_PIXEL_ID = import.meta.env.PUBLIC_FB_PIXEL_ID;
 ---
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-ga-id={GA_ID} data-fb-pixel-id={FB_PIXEL_ID}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -31,6 +34,7 @@ const { title, description, image, imageAlt, type = 'website', noindex = false, 
       <slot />
     </main>
     <SiteFooter />
+    <LgpdConsent />
   </body>
 </html>
 
